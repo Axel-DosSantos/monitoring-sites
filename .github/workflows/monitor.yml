@@ -1,0 +1,74 @@
+name: Monitoring Sites Albys
+
+on:
+  schedule:
+    # Tous les jours a 08h heure de Paris (07h UTC hiver / 06h UTC ete)
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+    inputs:
+      run_psi:
+        description: "Lancer PageSpeed Insights (plus long)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # necessaire pour commit results.json + history.db
+  pages: write      # deploy sur GitHub Pages
+  id-token: write
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Recuperer le code
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Installer les dependances
+        run: pip install -r requirements.txt
+
+      - name: Lancer le monitoring
+        env:
+          # SMTP (alertes email)
+          SMTP_HOST:     ${{ secrets.SMTP_HOST }}
+          SMTP_PORT:     ${{ secrets.SMTP_PORT }}
+          SMTP_USER:     ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_FROM:    ${{ secrets.EMAIL_FROM }}
+          EMAIL_SUPPORT: ${{ secrets.EMAIL_SUPPORT }}
+          EMAIL_AXEL:    ${{ secrets.EMAIL_AXEL }}
+          EMAIL_TEST:    ${{ secrets.EMAIL_TEST }}
+          # PageSpeed Insights (optionnel, active si cle definie)
+          PSI_API_KEY:   ${{ secrets.PSI_API_KEY }}
+          # Statut backups publie par namecheap-backup (Solution 1)
+          BACKUP_STATUS_URL: ${{ secrets.BACKUP_STATUS_URL }}
+        run: |
+          if [ "${{ github.event.inputs.run_psi }}" = "true" ] || [ -n "$PSI_API_KEY" ]; then
+            python monitor.py --psi
+          else
+            python monitor.py
+          fi
+
+      - name: Generer le dashboard statique
+        run: python build_static.py
+
+      - name: Sauvegarder results.json / history.db / xlsx
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add results.json history.db inventaire_monitoring.xlsx monitor.log || true
+          git diff --cached --quiet || git commit -m "chore: monitoring $(date +'%d/%m/%Y %H:%M')"
+          git push
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy sur GitHub Pages
+        uses: actions/deploy-pages@v4

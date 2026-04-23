@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Monitoring Albys — Dashboard</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --card-hover: #273449;
+    --border: #334155;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --ok: #22c55e;
+    --warn: #f59e0b;
+    --crit: #ef4444;
+    --none: #64748b;
+    --accent: #3b82f6;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 20px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  h1 { margin: 0 0 4px; font-size: 24px; }
+  .header-sub { color: var(--muted); margin-bottom: 24px; }
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    border-radius: 10px;
+  }
+  .stat-label { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .stat-value { font-size: 24px; font-weight: 600; margin-top: 4px; }
+  .stat.ok .stat-value { color: var(--ok); }
+  .stat.warn .stat-value { color: var(--warn); }
+  .stat.crit .stat-value { color: var(--crit); }
+
+  .sites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 14px;
+  }
+  .site-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: background 0.15s;
+  }
+  .site-card:hover { background: var(--card-hover); }
+  .site-card.critical { border-left: 4px solid var(--crit); }
+  .site-card.warning { border-left: 4px solid var(--warn); }
+  .site-card.ok { border-left: 4px solid var(--ok); }
+  .site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .site-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .site-url {
+    color: var(--muted);
+    font-size: 12px;
+    word-break: break-all;
+  }
+  .site-url a { color: var(--accent); text-decoration: none; }
+  .site-url a:hover { text-decoration: underline; }
+  .health {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .health-100, .health-90, .health-80 { background: rgba(34,197,94,0.15); color: var(--ok); }
+  .health-70, .health-60, .health-50 { background: rgba(245,158,11,0.15); color: var(--warn); }
+  .health-40, .health-30, .health-20, .health-10, .health-0 { background: rgba(239,68,68,0.15); color: var(--crit); }
+
+  .metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .metric {
+    background: rgba(0,0,0,0.2);
+    padding: 8px 10px;
+    border-radius: 6px;
+  }
+  .metric-label {
+    color: var(--muted);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .metric-value {
+    font-size: 13px;
+    margin-top: 2px;
+    font-weight: 500;
+  }
+  .dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .dot.ok { background: var(--ok); }
+  .dot.warn { background: var(--warn); }
+  .dot.crit { background: var(--crit); }
+  .dot.none { background: var(--none); }
+
+  .stack-badge {
+    display: inline-block;
+    background: rgba(59,130,246,0.15);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    margin-right: 4px;
+    margin-top: 2px;
+  }
+  .stack-badge.outdated {
+    background: rgba(239,68,68,0.15);
+    color: var(--crit);
+  }
+
+  .trend-btn {
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+  }
+  .trend-btn:hover { color: var(--text); border-color: var(--accent); }
+
+  .trend-canvas {
+    margin-top: 10px;
+    max-height: 160px;
+  }
+
+  .footer {
+    margin-top: 30px;
+    color: var(--muted);
+    font-size: 12px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+
+  .btn-scan {
+    background: var(--accent);
+    color: white;
+    border: 0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-left: 12px;
+  }
+  .btn-scan:hover { background: #2563eb; }
+  .btn-scan:disabled { opacity: 0.5; cursor: not-allowed; }
+</style>
+</head>
+<body>
+
+<div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:4px;">
+  <div>
+    <h1>Monitoring Albys</h1>
+    <div class="header-sub">Dernier scan : {{ last_run or "jamais" }} · {{ stats.total }} site{{ 's' if stats.total > 1 else '' }}</div>
+  </div>
+  <button class="btn-scan" id="scan-btn" onclick="launchScan()">Lancer un scan</button>
+</div>
+
+<div class="stats-bar">
+  <div class="stat"><div class="stat-label">Total</div><div class="stat-value">{{ stats.total }}</div></div>
+  <div class="stat ok"><div class="stat-label">En ligne</div><div class="stat-value">{{ stats.up }}</div></div>
+  <div class="stat crit"><div class="stat-label">Hors ligne</div><div class="stat-value">{{ stats.down }}</div></div>
+  <div class="stat crit"><div class="stat-label">Critiques</div><div class="stat-value">{{ stats.critical }}</div></div>
+  <div class="stat warn"><div class="stat-label">Alertes</div><div class="stat-value">{{ stats.warnings }}</div></div>
+  <div class="stat"><div class="stat-label">Sante moy.</div><div class="stat-value">{{ stats.avg_health }}/100</div></div>
+</div>
+
+<div class="sites-grid">
+{% for site in sites %}
+  {% set card_class = 'ok' %}
+  {% if not site.up or site.ssl_st == 'critical' or site.ndd_st == 'critical' %}
+    {% set card_class = 'critical' %}
+  {% elif site.ssl_st == 'warning' or site.ndd_st == 'warning' or (site.backup and site.backup.status == 'warning') %}
+    {% set card_class = 'warning' %}
+  {% endif %}
+  <div class="site-card {{ card_class }}" data-domain="{{ site.domaine }}">
+    <div class="site-header">
+      <div>
+        <div class="site-title">{{ site.client }}</div>
+        <div class="site-url"><a href="{{ site.url }}" target="_blank" rel="noopener">{{ site.domaine }}</a></div>
+      </div>
+      <div class="health health-{{ (site.health_score // 10) * 10 }}">{{ site.health_score }}</div>
+    </div>
+
+    <div class="metrics">
+      <div class="metric">
+        <div class="metric-label">Uptime</div>
+        <div class="metric-value">
+          <span class="dot {{ 'ok' if site.up else 'crit' }}"></span>
+          {{ site.up_msg }}
+          {% if site.response_ms %} · {{ site.response_ms }} ms{% endif %}
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">SSL</div>
+        <div class="metric-value">
+          <span class="dot {{ site.ssl_st if site.ssl_st in ['ok','warning','critical'] else 'none' }}"
+                title="{{ site.ssl_st }}"></span>
+          {{ site.ssl_msg }}
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">Domaine</div>
+        <div class="metric-value">
+          <span class="dot {{ site.ndd_st if site.ndd_st in ['ok','warning','critical'] else 'none' }}"></span>
+          {{ site.ndd_msg }}
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">PageSpeed</div>
+        <div class="metric-value">
+          {% if site.psi and site.psi.score is not none %}
+            <span class="dot {{ 'ok' if site.psi.score >= 90 else ('warn' if site.psi.score >= 50 else 'crit') }}"></span>
+            {{ site.psi.score }}/100
+            {% if site.psi.lcp_ms %} · LCP {{ site.psi.lcp_ms }}ms{% endif %}
+          {% else %}
+            <span class="dot none"></span> Non mesure
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">Backup</div>
+        <div class="metric-value">
+          {% if site.backup and site.backup.last_backup %}
+            <span class="dot {{ site.backup.status if site.backup.status in ['ok','warning','critical'] else 'none' }}"></span>
+            il y a {{ site.backup.days_since }} j
+            {% if site.backup.size_mb %}· {{ "%.0f"|format(site.backup.size_mb) }} Mo{% endif %}
+          {% else %}
+            <span class="dot none"></span> Non configure
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="metric">
+        <div class="metric-label">Hebergement</div>
+        <div class="metric-value">
+          {{ site.heb_dom }}{% if site.heb_site and site.heb_site != '-' %} / {{ site.heb_site }}{% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if site.stack and (site.stack.cms or site.stack.php_version or site.stack.server) %}
+    <div style="margin-top:10px;">
+      {% if site.stack.cms %}
+        <span class="stack-badge {{ 'outdated' if site.stack.cms_outdated else '' }}">
+          {{ site.stack.cms }}{% if site.stack.cms_version %} {{ site.stack.cms_version }}{% endif %}
+        </span>
+      {% endif %}
+      {% if site.stack.php_version %}
+        <span class="stack-badge">PHP {{ site.stack.php_version }}</span>
+      {% endif %}
+      {% if site.stack.server %}
+        <span class="stack-badge">{{ site.stack.server.split('/')[0] }}</span>
+      {% endif %}
+    </div>
+    {% endif %}
+
+    <button class="trend-btn" onclick="toggleTrend(this, '{{ site.domaine }}')">Voir la tendance 30j</button>
+    <canvas class="trend-canvas" id="chart-{{ loop.index }}" style="display:none;"></canvas>
+  </div>
+{% endfor %}
+</div>
+
+<div class="footer">
+  Monitoring Albys · Donnees rafraichies quotidiennement par GitHub Actions
+</div>
+
+<script>
+async function toggleTrend(btn, domain) {
+  const canvas = btn.nextElementSibling;
+  if (canvas.style.display === 'block') {
+    canvas.style.display = 'none';
+    btn.textContent = 'Voir la tendance 30j';
+    return;
+  }
+  btn.textContent = 'Chargement...';
+  const res = await fetch(`/api/trends/${encodeURIComponent(domain)}?days=30`);
+  const data = await res.json();
+  canvas.style.display = 'block';
+  btn.textContent = 'Masquer la tendance';
+
+  if (canvas._chart) { canvas._chart.destroy(); }
+  const labels = data.points.map(p => p.ts.slice(5, 10));
+  canvas._chart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Response (ms)',
+          data: data.points.map(p => p.response_ms),
+          borderColor: '#3b82f6', backgroundColor: 'transparent', yAxisID: 'y',
+        },
+        {
+          label: 'PSI Score',
+          data: data.points.map(p => p.psi_score),
+          borderColor: '#22c55e', backgroundColor: 'transparent', yAxisID: 'y1',
+          spanGaps: true,
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: '#94a3b8', font: { size: 10 } } } },
+      scales: {
+        x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } },
+        y: { position: 'left', ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
+        y1: { position: 'right', min: 0, max: 100, ticks: { color: '#94a3b8' }, grid: { display: false } }
+      }
+    }
+  });
+}
+
+async function launchScan() {
+  const btn = document.getElementById('scan-btn');
+  btn.disabled = true;
+  btn.textContent = 'Scan en cours...';
+  try {
+    await fetch('/run', { method: 'POST' });
+    setTimeout(() => location.reload(), 30000);
+  } catch (e) {
+    btn.disabled = false;
+    btn.textContent = 'Erreur — reessayer';
+  }
+}
+</script>
+</body>
+</html>

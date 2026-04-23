@@ -1,0 +1,22 @@
+# Logs
+monitor.log
+
+# Fichiers générés
+__pycache__/
+*.pyc
+*.pyo
+
+# Build statique (genere par build_static.py, deploye directement sur Pages)
+public/
+
+# Environnement virtuel
+venv/
+.venv/
+env/
+
+# Fichiers de config locaux
+*.env
+.env
+
+# Tâche Windows (inutile sur GitHub)
+planifier_tache.ps1
