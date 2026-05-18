@@ -203,8 +203,8 @@ def run(test_mode: bool = False, run_psi: bool = False):
 
         try:
             is_up, up_msg, response_ms, http_status = check_uptime(url, timeout)
-            ssl_st, ssl_msg, ssl_days, ssl_issuer = check_ssl(url, ssl_warn)
-            ndd_st, ndd_msg, ndd_days = check_domain(url, ndd_warn)
+            ssl_st, ssl_msg, ssl_days, ssl_issuer, ssl_expires_iso = check_ssl(url, ssl_warn)
+            ndd_st, ndd_msg, ndd_days, ndd_expires_iso = check_domain(url, ndd_warn)
             stack_info = check_stack(url)
             psi = {}
             if run_psi:
@@ -216,25 +216,78 @@ def run(test_mode: bool = False, run_psi: bool = False):
         # Backup : lookup par domaine
         backup = backup_index.get(domaine_str.lower(), {})
 
-        # Construction des alertes
+        # Construction des alertes avec dedoublonnage
+        # 4 categories : ssl, ndd (countdown) + down, backup (sticky)
         issues = []
+        domain_key = domaine_str.lower()
+
+        # --- SSL (countdown J-30 / J-15 / J-7..J-1) ---
+        ssl_should = False
+        ssl_alert_type = "none"
+        if ssl_days is not None and ssl_expires_iso and ssl_st in ("warning", "critical"):
+            ssl_should, ssl_alert_type = history.should_send_alert(
+                HISTORY_DB, domain_key, "ssl",
+                expires_iso=ssl_expires_iso, days_left=ssl_days,
+            )
+        if ssl_should:
+            if ssl_alert_type == "daily":
+                _p = "SSL CRITIQUE" if ssl_days <= 7 else "SSL EXPIRATION"
+                issues.append((f"{_p} J-{ssl_days}", ssl_msg, 1,
+                               ("ssl", "daily", ssl_expires_iso)))
+            elif ssl_alert_type == "j15":
+                issues.append(("SSL EXPIRATION J-15", ssl_msg, 2,
+                               ("ssl", "j15", ssl_expires_iso)))
+            else:  # j30
+                issues.append(("SSL EXPIRATION J-30", ssl_msg, 2,
+                               ("ssl", "j30", ssl_expires_iso)))
+
+        # --- NDD (countdown idem SSL) ---
+        ndd_should = False
+        ndd_alert_type = "none"
+        if ndd_days is not None and ndd_expires_iso and ndd_st in ("warning", "critical"):
+            ndd_should, ndd_alert_type = history.should_send_alert(
+                HISTORY_DB, domain_key, "ndd",
+                expires_iso=ndd_expires_iso, days_left=ndd_days,
+            )
+        if ndd_should:
+            if ndd_alert_type == "daily":
+                _p = "NDD CRITIQUE" if ndd_days <= 7 else "NDD EXPIRATION"
+                issues.append((f"{_p} J-{ndd_days}", ndd_msg, 1,
+                               ("ndd", "daily", ndd_expires_iso)))
+            elif ndd_alert_type == "j15":
+                issues.append(("NDD EXPIRATION J-15", ndd_msg, 2,
+                               ("ndd", "j15", ndd_expires_iso)))
+            else:  # j30
+                issues.append(("NDD EXPIRATION J-30", ndd_msg, 2,
+                               ("ndd", "j30", ndd_expires_iso)))
+
+        # --- DOWN (sticky : 1ere alerte + rappel quotidien tant que le site est down) ---
         if not is_up:
-            issues.append(("Site DOWN", up_msg, 1))
-        if ssl_st == "critical":
-            issues.append(("SSL CRITIQUE", ssl_msg, 1))
-        elif ssl_st == "warning":
-            issues.append(("SSL EXPIRATION", ssl_msg, 2))
-        if ndd_st == "critical":
-            issues.append(("NDD CRITIQUE", ndd_msg, 1))
-        elif ndd_st == "warning":
-            issues.append(("NDD EXPIRATION", ndd_msg, 2))
+            d_should, d_type = history.should_send_alert(HISTORY_DB, domain_key, "down")
+            if d_should:
+                _p = "Site DOWN" if d_type == "first" else "Site DOWN (rappel)"
+                issues.append((_p, up_msg, 1, ("down", d_type, None)))
+        else:
+            # Site revenu UP -> reset l'etat (la prochaine panne sera "first")
+            history.mark_resolved(HISTORY_DB, domain_key, "down")
+
+        # --- BACKUP MANQUANT (sticky : 1ere alerte + rappel hebdomadaire) ---
         if backup.get("status") == "critical":
-            issues.append(("BACKUP MANQUANT", f"Dernier backup il y a {backup.get('days_since')}j", 2))
-        # NOTE : PHP obsolete — pas d'email (éviterait de spammer chaque jour).
-        # L'info reste visible dans le dashboard via stack_info.php_outdated.
+            b_should, b_type = history.should_send_alert(HISTORY_DB, domain_key, "backup")
+            if b_should:
+                _p = "BACKUP MANQUANT" if b_type == "first" else "BACKUP MANQUANT (rappel)"
+                _detail = f"Dernier backup il y a {backup.get('days_since')}j"
+                issues.append((_p, _detail, 2, ("backup", b_type, None)))
+        else:
+            history.mark_resolved(HISTORY_DB, domain_key, "backup")
+
+        # NOTE : PHP obsolete - pas d'email (l'info reste visible dans le dashboard).
 
         ticket_ids = []
-        for title_prefix, detail, _ in issues:
+        for issue in issues:
+            title_prefix, detail = issue[0], issue[1]
+            # 4e element optionnel : (category, alert_type, expires_iso_or_None)
+            meta = issue[3] if len(issue) >= 4 else None
             subject = f"[MONITORING] {title_prefix} - {client} ({url})"
             body = (
                 f"Client    : {client}\n"
@@ -249,6 +302,12 @@ def run(test_mode: bool = False, run_psi: bool = False):
             ok = send_support_email(cfg, subject, body)
             if ok:
                 ticket_ids.append("email envoye")
+                if meta:
+                    _cat, _atype, _exp = meta
+                    history.mark_alert_sent(
+                        HISTORY_DB, domain_key, _cat, _atype,
+                        expires_iso=_exp,
+                    )
             log.warning(f"  {title_prefix}: {detail}")
 
         if not issues:
