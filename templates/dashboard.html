@@ -19,6 +19,8 @@
     --crit: #ef4444;
     --none: #64748b;
     --accent: #3b82f6;
+    --gandi: #7c3aed;
+    --gandi-light: rgba(124,58,237,0.15);
   }
   * { box-sizing: border-box; }
   body {
@@ -31,6 +33,34 @@
     line-height: 1.5;
   }
   h1 { margin: 0 0 4px; font-size: 24px; }
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 32px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+  }
+  h2 .section-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(59,130,246,0.15);
+    color: var(--accent);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  h2.gandi-title .section-badge {
+    background: var(--gandi-light);
+    color: #a78bfa;
+  }
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 32px 0 0;
+  }
   .header-sub { color: var(--muted); margin-bottom: 24px; }
   .stats-bar {
     display: grid;
@@ -50,6 +80,7 @@
   .stat.warn .stat-value { color: var(--warn); }
   .stat.crit .stat-value { color: var(--crit); }
 
+  /* ── Sites grid ── */
   .sites-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -64,23 +95,16 @@
   }
   .site-card:hover { background: var(--card-hover); }
   .site-card.critical { border-left: 4px solid var(--crit); }
-  .site-card.warning { border-left: 4px solid var(--warn); }
-  .site-card.ok { border-left: 4px solid var(--ok); }
+  .site-card.warning  { border-left: 4px solid var(--warn); }
+  .site-card.ok       { border-left: 4px solid var(--ok); }
   .site-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 12px;
   }
-  .site-title {
-    font-size: 16px;
-    font-weight: 600;
-  }
-  .site-url {
-    color: var(--muted);
-    font-size: 12px;
-    word-break: break-all;
-  }
+  .site-title { font-size: 16px; font-weight: 600; }
+  .site-url { color: var(--muted); font-size: 12px; word-break: break-all; }
   .site-url a { color: var(--accent); text-decoration: none; }
   .site-url a:hover { text-decoration: underline; }
   .health {
@@ -91,7 +115,7 @@
     white-space: nowrap;
   }
   .health-100, .health-90, .health-80 { background: rgba(34,197,94,0.15); color: var(--ok); }
-  .health-70, .health-60, .health-50 { background: rgba(245,158,11,0.15); color: var(--warn); }
+  .health-70, .health-60, .health-50  { background: rgba(245,158,11,0.15); color: var(--warn); }
   .health-40, .health-30, .health-20, .health-10, .health-0 { background: rgba(239,68,68,0.15); color: var(--crit); }
 
   .metrics {
@@ -111,11 +135,7 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
-  .metric-value {
-    font-size: 13px;
-    margin-top: 2px;
-    font-weight: 500;
-  }
+  .metric-value { font-size: 13px; margin-top: 2px; font-weight: 500; }
   .dot {
     display: inline-block;
     width: 8px; height: 8px;
@@ -123,7 +143,7 @@
     margin-right: 6px;
     vertical-align: middle;
   }
-  .dot.ok { background: var(--ok); }
+  .dot.ok   { background: var(--ok); }
   .dot.warn { background: var(--warn); }
   .dot.crit { background: var(--crit); }
   .dot.none { background: var(--none); }
@@ -138,10 +158,7 @@
     margin-right: 4px;
     margin-top: 2px;
   }
-  .stack-badge.outdated {
-    background: rgba(239,68,68,0.15);
-    color: var(--crit);
-  }
+  .stack-badge.outdated { background: rgba(239,68,68,0.15); color: var(--crit); }
 
   .trend-btn {
     margin-top: 10px;
@@ -154,12 +171,144 @@
     font-size: 11px;
   }
   .trend-btn:hover { color: var(--text); border-color: var(--accent); }
+  .trend-canvas { margin-top: 10px; max-height: 160px; }
 
-  .trend-canvas {
+  /* ── Gandi domains grid ── */
+  .gandi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 12px;
+  }
+  .gandi-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .gandi-card:hover { background: var(--card-hover); }
+  .gandi-card.critical { border-left: 4px solid var(--crit); }
+  .gandi-card.warning  { border-left: 4px solid var(--warn); }
+  .gandi-card.ok       { border-left: 4px solid var(--ok); }
+  .gandi-card.unknown,
+  .gandi-card.error    { border-left: 4px solid var(--none); }
+
+  .gandi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .gandi-fqdn {
+    font-size: 15px;
+    font-weight: 600;
+    word-break: break-all;
+  }
+  .gandi-fqdn a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .gandi-fqdn a:hover { color: #a78bfa; }
+
+  .days-badge {
+    flex-shrink: 0;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .days-badge.ok       { background: rgba(34,197,94,0.15);  color: var(--ok); }
+  .days-badge.warning  { background: rgba(245,158,11,0.15); color: var(--warn); }
+  .days-badge.critical { background: rgba(239,68,68,0.15);  color: var(--crit); }
+  .days-badge.unknown,
+  .days-badge.error    { background: rgba(100,116,139,0.15); color: var(--none); }
+
+  .gandi-meta {
     margin-top: 10px;
-    max-height: 160px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .gandi-tag {
+    background: rgba(0,0,0,0.2);
+    padding: 3px 8px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .gandi-tag.autorenew-on  { color: var(--ok); }
+  .gandi-tag.autorenew-off { color: var(--crit); background: rgba(239,68,68,0.08); }
+  .gandi-tag.tld { color: var(--accent); }
+
+  .gandi-msg {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--muted);
   }
 
+  .gandi-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--muted);
+    padding: 40px 20px;
+    font-size: 14px;
+    background: var(--card);
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+  }
+  .gandi-empty code {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--accent);
+    background: rgba(59,130,246,0.08);
+    padding: 6px 12px;
+    border-radius: 6px;
+    display: inline-block;
+  }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 24px;
+  }
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-size: 14px;
+    padding: 10px 18px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    font-family: inherit;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+  .tab-btn.gandi-tab.active { border-bottom-color: #7c3aed; }
+  .tab-count {
+    display: inline-block;
+    font-size: 11px;
+    background: rgba(255,255,255,0.08);
+    padding: 1px 6px;
+    border-radius: 999px;
+    margin-left: 6px;
+  }
+  .tab-count.warn { background: rgba(245,158,11,0.2); color: var(--warn); }
+  .tab-count.crit { background: rgba(239,68,68,0.2);  color: var(--crit); }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Footer & buttons ── */
   .footer {
     margin-top: 30px;
     color: var(--muted);
@@ -168,7 +317,6 @@
     padding-top: 20px;
     border-top: 1px solid var(--border);
   }
-
   .btn-scan {
     background: var(--accent);
     color: white;
@@ -188,13 +336,14 @@
 <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:4px;">
   <div>
     <h1>Monitoring Albys</h1>
-    <div class="header-sub">Dernier scan : {{ last_run or "jamais" }} · {{ stats.total }} site{{ 's' if stats.total > 1 else '' }}</div>
+    <div class="header-sub">Dernier scan : {{ last_run or "jamais" }} · {{ stats.total }} site{{ 's' if stats.total > 1 else '' }} · {{ gandi_stats.total }} domaine{{ 's' if gandi_stats.total > 1 else '' }} Gandi</div>
   </div>
   <button class="btn-scan" id="scan-btn" onclick="launchScan()">Lancer un scan</button>
 </div>
 
+<!-- Stats globales sites -->
 <div class="stats-bar">
-  <div class="stat"><div class="stat-label">Total</div><div class="stat-value">{{ stats.total }}</div></div>
+  <div class="stat"><div class="stat-label">Sites total</div><div class="stat-value">{{ stats.total }}</div></div>
   <div class="stat ok"><div class="stat-label">En ligne</div><div class="stat-value">{{ stats.up }}</div></div>
   <div class="stat crit"><div class="stat-label">Hors ligne</div><div class="stat-value">{{ stats.down }}</div></div>
   <div class="stat crit"><div class="stat-label">Critiques</div><div class="stat-value">{{ stats.critical }}</div></div>
@@ -202,104 +351,186 @@
   <div class="stat"><div class="stat-label">Sante moy.</div><div class="stat-value">{{ stats.avg_health }}/100</div></div>
 </div>
 
-<div class="sites-grid">
-{% for site in sites %}
-  {% set card_class = 'ok' %}
-  {% if not site.up or site.ssl_st == 'critical' or site.ndd_st == 'critical' %}
-    {% set card_class = 'critical' %}
-  {% elif site.ssl_st == 'warning' or site.ndd_st == 'warning' or (site.backup and site.backup.status == 'warning') %}
-    {% set card_class = 'warning' %}
-  {% endif %}
-  <div class="site-card {{ card_class }}" data-domain="{{ site.domaine }}">
-    <div class="site-header">
-      <div>
-        <div class="site-title">{{ site.client }}</div>
-        <div class="site-url"><a href="{{ site.url }}" target="_blank" rel="noopener">{{ site.domaine }}</a></div>
-      </div>
-      <div class="health health-{{ (site.health_score // 10) * 10 }}">{{ site.health_score }}</div>
-    </div>
+<!-- Tabs -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('sites', this)">
+    Sites web
+    <span class="tab-count {% if stats.critical > 0 %}crit{% elif stats.warnings > 0 %}warn{% endif %}">{{ stats.total }}</span>
+  </button>
+  <button class="tab-btn gandi-tab" onclick="switchTab('gandi', this)">
+    Domaines Gandi
+    <span class="tab-count {% if gandi_stats.critiques > 0 %}crit{% elif gandi_stats.warnings > 0 %}warn{% endif %}">{{ gandi_stats.total }}</span>
+  </button>
+</div>
 
-    <div class="metrics">
-      <div class="metric">
-        <div class="metric-label">Uptime</div>
-        <div class="metric-value">
-          <span class="dot {{ 'ok' if site.up else 'crit' }}"></span>
-          {{ site.up_msg }}
-          {% if site.response_ms %} · {{ site.response_ms }} ms{% endif %}
-        </div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">SSL</div>
-        <div class="metric-value">
-          <span class="dot {{ site.ssl_st if site.ssl_st in ['ok','warning','critical'] else 'none' }}"
-                title="{{ site.ssl_st }}"></span>
-          {{ site.ssl_msg }}
-        </div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">Domaine</div>
-        <div class="metric-value">
-          <span class="dot {{ site.ndd_st if site.ndd_st in ['ok','warning','critical'] else 'none' }}"></span>
-          {{ site.ndd_msg }}
-        </div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">PageSpeed</div>
-        <div class="metric-value">
-          {% if site.psi and site.psi.score is not none %}
-            <span class="dot {{ 'ok' if site.psi.score >= 90 else ('warn' if site.psi.score >= 50 else 'crit') }}"></span>
-            {{ site.psi.score }}/100
-            {% if site.psi.lcp_ms %} · LCP {{ site.psi.lcp_ms }}ms{% endif %}
-          {% else %}
-            <span class="dot none"></span> Non mesure
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">Backup</div>
-        <div class="metric-value">
-          {% if site.backup and site.backup.last_backup %}
-            <span class="dot {{ site.backup.status if site.backup.status in ['ok','warning','critical'] else 'none' }}"></span>
-            il y a {{ site.backup.days_since }} j
-            {% if site.backup.size_mb %}· {{ "%.0f"|format(site.backup.size_mb) }} Mo{% endif %}
-          {% else %}
-            <span class="dot none"></span> Non configure
-          {% endif %}
-        </div>
-      </div>
-
-      <div class="metric">
-        <div class="metric-label">Hebergement</div>
-        <div class="metric-value">
-          {{ site.heb_dom }}{% if site.heb_site and site.heb_site != '-' %} / {{ site.heb_site }}{% endif %}
-        </div>
-      </div>
-    </div>
-
-    {% if site.stack and (site.stack.cms or site.stack.php_version or site.stack.server) %}
-    <div style="margin-top:10px;">
-      {% if site.stack.cms %}
-        <span class="stack-badge {{ 'outdated' if site.stack.cms_outdated else '' }}">
-          {{ site.stack.cms }}{% if site.stack.cms_version %} {{ site.stack.cms_version }}{% endif %}
-        </span>
-      {% endif %}
-      {% if site.stack.php_version %}
-        <span class="stack-badge">PHP {{ site.stack.php_version }}</span>
-      {% endif %}
-      {% if site.stack.server %}
-        <span class="stack-badge">{{ site.stack.server.split('/')[0] }}</span>
-      {% endif %}
-    </div>
+<!-- Panel Sites -->
+<div id="panel-sites" class="tab-panel active">
+  <div class="sites-grid">
+  {% for site in sites %}
+    {% set card_class = 'ok' %}
+    {% if not site.up or site.ssl_st == 'critical' or site.ndd_st == 'critical' %}
+      {% set card_class = 'critical' %}
+    {% elif site.ssl_st == 'warning' or site.ndd_st == 'warning' or (site.backup and site.backup.status == 'warning') %}
+      {% set card_class = 'warning' %}
     {% endif %}
+    <div class="site-card {{ card_class }}" data-domain="{{ site.domaine }}">
+      <div class="site-header">
+        <div>
+          <div class="site-title">{{ site.client }}</div>
+          <div class="site-url"><a href="{{ site.url }}" target="_blank" rel="noopener">{{ site.domaine }}</a></div>
+        </div>
+        <div class="health health-{{ (site.health_score // 10) * 10 }}">{{ site.health_score }}</div>
+      </div>
 
-    <button class="trend-btn" onclick="toggleTrend(this, '{{ site.domaine }}')">Voir la tendance 30j</button>
-    <canvas class="trend-canvas" id="chart-{{ loop.index }}" style="display:none;"></canvas>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">Uptime</div>
+          <div class="metric-value">
+            <span class="dot {{ 'ok' if site.up else 'crit' }}"></span>
+            {{ site.up_msg }}
+            {% if site.response_ms %} · {{ site.response_ms }} ms{% endif %}
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">SSL</div>
+          <div class="metric-value">
+            <span class="dot {{ site.ssl_st if site.ssl_st in ['ok','warning','critical'] else 'none' }}"
+                  title="{{ site.ssl_st }}"></span>
+            {{ site.ssl_msg }}
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Domaine</div>
+          <div class="metric-value">
+            <span class="dot {{ site.ndd_st if site.ndd_st in ['ok','warning','critical'] else 'none' }}"></span>
+            {{ site.ndd_msg }}
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">PageSpeed</div>
+          <div class="metric-value">
+            {% if site.psi and site.psi.score is not none %}
+              <span class="dot {{ 'ok' if site.psi.score >= 90 else ('warn' if site.psi.score >= 50 else 'crit') }}"></span>
+              {{ site.psi.score }}/100
+              {% if site.psi.lcp_ms %} · LCP {{ site.psi.lcp_ms }}ms{% endif %}
+            {% else %}
+              <span class="dot none"></span> Non mesure
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Backup</div>
+          <div class="metric-value">
+            {% if site.backup and site.backup.last_backup %}
+              <span class="dot {{ site.backup.status if site.backup.status in ['ok','warning','critical'] else 'none' }}"></span>
+              il y a {{ site.backup.days_since }} j
+              {% if site.backup.size_mb %}· {{ "%.0f"|format(site.backup.size_mb) }} Mo{% endif %}
+            {% else %}
+              <span class="dot none"></span> Non configure
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="metric">
+          <div class="metric-label">Hebergement</div>
+          <div class="metric-value">
+            {{ site.heb_dom }}{% if site.heb_site and site.heb_site != '-' %} / {{ site.heb_site }}{% endif %}
+          </div>
+        </div>
+      </div>
+
+      {% if site.stack and (site.stack.cms or site.stack.php_version or site.stack.server) %}
+      <div style="margin-top:10px;">
+        {% if site.stack.cms %}
+          <span class="stack-badge {{ 'outdated' if site.stack.cms_outdated else '' }}">
+            {{ site.stack.cms }}{% if site.stack.cms_version %} {{ site.stack.cms_version }}{% endif %}
+          </span>
+        {% endif %}
+        {% if site.stack.php_version %}
+          <span class="stack-badge">PHP {{ site.stack.php_version }}</span>
+        {% endif %}
+        {% if site.stack.server %}
+          <span class="stack-badge">{{ site.stack.server.split('/')[0] }}</span>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <button class="trend-btn" onclick="toggleTrend(this, '{{ site.domaine }}')">Voir la tendance 30j</button>
+      <canvas class="trend-canvas" id="chart-{{ loop.index }}" style="display:none;"></canvas>
+    </div>
+  {% endfor %}
   </div>
-{% endfor %}
+</div>
+
+<!-- Panel Domaines Gandi -->
+<div id="panel-gandi" class="tab-panel">
+
+  {% if gandi_stats.total > 0 %}
+  <!-- Stats bar Gandi -->
+  <div class="stats-bar" style="margin-bottom:20px;">
+    <div class="stat"><div class="stat-label">Total domaines</div><div class="stat-value">{{ gandi_stats.total }}</div></div>
+    <div class="stat crit"><div class="stat-label">Critiques (&lt;7j)</div><div class="stat-value">{{ gandi_stats.critiques }}</div></div>
+    <div class="stat warn"><div class="stat-label">Alertes (&lt;30j)</div><div class="stat-value">{{ gandi_stats.warnings }}</div></div>
+    <div class="stat crit"><div class="stat-label">Sans renouvellement auto</div><div class="stat-value">{{ gandi_stats.autorenew_off }}</div></div>
+  </div>
+  {% if gandi_last_run %}
+    <div style="color:var(--muted);font-size:12px;margin-bottom:16px;">Dernier scan Gandi : {{ gandi_last_run }}</div>
+  {% endif %}
+  {% endif %}
+
+  <div class="gandi-grid">
+    {% if gandi_stats.total == 0 %}
+      <div class="gandi-empty">
+        Aucun domaine Gandi récupéré.<br>
+        Lancez <code>python gandi_monitor.py</code> avec votre <code>GANDI_API_KEY</code> pour commencer.
+      </div>
+    {% else %}
+      {% for d in gandi_domains %}
+        {% set status = d.status if d.status in ['ok','warning','critical','unknown','error'] else 'unknown' %}
+        <div class="gandi-card {{ status }}">
+          <div class="gandi-header">
+            <div class="gandi-fqdn">
+              <a href="https://admin.gandi.net/domain/{{ d.fqdn }}" target="_blank" rel="noopener" title="Gérer sur Gandi">
+                {{ d.fqdn }}
+              </a>
+            </div>
+            <div class="days-badge {{ status }}">
+              {% if d.days_left is not none %}
+                {{ d.days_left }}j
+              {% else %}
+                ?
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="gandi-msg">{{ d.message }}</div>
+
+          <div class="gandi-meta">
+            {% if d.tld %}
+              <span class="gandi-tag tld">.{{ d.tld }}</span>
+            {% endif %}
+
+            {% if d.autorenew %}
+              <span class="gandi-tag autorenew-on">✓ Renouvellement auto</span>
+            {% else %}
+              <span class="gandi-tag autorenew-off">✗ Sans renouvellement auto</span>
+            {% endif %}
+
+            {% if d.nameservers %}
+              {% set ns0 = d.nameservers[0] %}
+              <span class="gandi-tag" title="{{ d.nameservers | join(', ') }}">
+                NS : {{ ns0.split('.')[0] }}…
+              </span>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
 </div>
 
 <div class="footer">
@@ -307,6 +538,13 @@
 </div>
 
 <script>
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
 async function toggleTrend(btn, domain) {
   const canvas = btn.nextElementSibling;
   if (canvas.style.display === 'block') {
@@ -363,6 +601,11 @@ async function launchScan() {
     btn.disabled = false;
     btn.textContent = 'Erreur — reessayer';
   }
+}
+
+// Ouvrir directement l'onglet Gandi si l'URL contient #gandi
+if (location.hash === '#gandi') {
+  switchTab('gandi', document.querySelector('.gandi-tab'));
 }
 </script>
 </body>
