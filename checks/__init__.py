@@ -1,10 +1,11 @@
-"""Ensemble des checks de sante d'un site (uptime, ssl, ndd, pagespeed, stack, backup)."""
+"""Ensemble des checks de sante d'un site (uptime, ssl, ndd, pagespeed, stack, backup, gandi)."""
 from .uptime import check_uptime
 from .ssl_check import check_ssl
 from .domain import check_domain
 from .pagespeed import check_pagespeed
 from .stack import check_stack
 from .backup import load_backup_status
+from .gandi import get_all_gandi_domains_status
 
 __all__ = [
     "check_uptime",
@@ -13,4 +14,5 @@ __all__ = [
     "check_pagespeed",
     "check_stack",
     "load_backup_status",
+    "get_all_gandi_domains_status",
 ]
