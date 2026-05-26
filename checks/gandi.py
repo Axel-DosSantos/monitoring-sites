@@ -18,39 +18,94 @@ def _get_api_key() -> Optional[str]:
 
 
 def _headers(api_key: str) -> dict:
-    # Gandi supporte à la fois l'ancienne API Key et les Personal Access Tokens (PAT)
     return {
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json",
     }
 
 
+def _fetch_sharing_ids(api_key: str) -> list[Optional[str]]:
+    """
+    Retourne la liste des sharing_ids à interroger.
+    - None  = compte personnel
+    - str   = une organisation
+
+    Si l'appel échoue, on tente quand même avec le compte perso.
+    """
+    ids: list[Optional[str]] = [None]  # toujours tester le compte perso en premier
+    try:
+        resp = requests.get(
+            f"{GANDI_API_BASE}/organization/organizations",
+            headers=_headers(api_key),
+            timeout=15,
+        )
+        if resp.status_code == 200:
+            for org in resp.json():
+                # Gandi renvoie "id" ou "sharing_id" selon les versions
+                org_id = org.get("id") or org.get("sharing_id")
+                if org_id and org_id not in ids:
+                    ids.append(org_id)
+                    log.info(f"Gandi : organisation trouvée → sharing_id={org_id} ({org.get('name', '?')})")
+        else:
+            log.warning(f"Gandi organisations : HTTP {resp.status_code} — on tente avec le compte perso uniquement")
+    except Exception as e:
+        log.warning(f"Gandi organisations : erreur ({e}) — on tente avec le compte perso uniquement")
+    return ids
+
+
 def fetch_gandi_domains(api_key: str) -> list[dict]:
-    """Retourne la liste brute des domaines depuis l'API Gandi (toutes les pages)."""
-    domains = []
-    page = 1
-    per_page = 100
+    """
+    Retourne la liste brute des domaines depuis l'API Gandi.
+    Interroge le compte personnel ET toutes les organisations.
+    Déduplique par FQDN.
+    """
+    sharing_ids = _fetch_sharing_ids(api_key)
+    log.info(f"Gandi : {len(sharing_ids)} compte(s) à interroger (perso + {len(sharing_ids)-1} org)")
 
-    while True:
-        url = f"{GANDI_API_BASE}/domain/domains"
-        params = {"page": page, "per_page": per_page}
-        try:
-            resp = requests.get(url, headers=_headers(api_key), params=params, timeout=15)
-            resp.raise_for_status()
-            data = resp.json()
-        except requests.exceptions.HTTPError as e:
-            if resp.status_code == 401:
-                raise ValueError("Clé API Gandi invalide ou expirée (401 Unauthorized)") from e
-            raise
-        except requests.exceptions.RequestException as e:
-            raise ConnectionError(f"Impossible de joindre l'API Gandi : {e}") from e
+    seen: set[str] = set()
+    domains: list[dict] = []
 
-        if not data:
-            break
-        domains.extend(data)
-        if len(data) < per_page:
-            break
-        page += 1
+    for sharing_id in sharing_ids:
+        page = 1
+        per_page = 100
+        label = f"sharing_id={sharing_id}" if sharing_id else "compte perso"
+
+        while True:
+            params: dict = {"page": page, "per_page": per_page}
+            if sharing_id:
+                params["sharing_id"] = sharing_id
+
+            try:
+                resp = requests.get(
+                    f"{GANDI_API_BASE}/domain/domains",
+                    headers=_headers(api_key),
+                    params=params,
+                    timeout=15,
+                )
+                resp.raise_for_status()
+                data = resp.json()
+            except requests.exceptions.HTTPError as e:
+                if resp.status_code == 401:
+                    raise ValueError("Clé API Gandi invalide ou expirée (401 Unauthorized)") from e
+                log.warning(f"Gandi [{label}] page {page} : HTTP {resp.status_code} — on passe")
+                break
+            except requests.exceptions.RequestException as e:
+                raise ConnectionError(f"Impossible de joindre l'API Gandi : {e}") from e
+
+            if not data:
+                break
+
+            for d in data:
+                fqdn = d.get("fqdn", "")
+                if fqdn and fqdn not in seen:
+                    seen.add(fqdn)
+                    domains.append(d)
+
+            log.info(f"Gandi [{label}] page {page} : {len(data)} domaine(s)")
+
+            if len(data) < per_page:
+                break
+            page += 1
 
     return domains
 
@@ -58,23 +113,14 @@ def fetch_gandi_domains(api_key: str) -> list[dict]:
 def check_gandi_domain(domain_data: dict, warn_days: int = 30) -> dict:
     """
     Analyse un domaine retourné par l'API Gandi.
-
-    Retourne un dict avec :
-        fqdn        : str  - nom de domaine complet
-        expires_iso : str  - date d'expiration ISO (YYYY-MM-DD)
-        days_left   : int  - jours avant expiration
-        status      : str  - 'ok' | 'warning' | 'critical'
-        message     : str  - message lisible
-        autorenew   : bool - renouvellement automatique activé
-        nameservers : list - serveurs de noms
-        tld         : str  - extension (.fr, .com, …)
     """
     fqdn = domain_data.get("fqdn") or domain_data.get("id", "inconnu")
     autorenew = (domain_data.get("autorenew") or {}).get("enabled", False)
 
-    # Date d'expiration (format ISO retourné par Gandi)
-    expires_raw = domain_data.get("dates", {}).get("registry_ends_at") or \
-                  domain_data.get("dates", {}).get("expires_at")
+    expires_raw = (
+        domain_data.get("dates", {}).get("registry_ends_at")
+        or domain_data.get("dates", {}).get("expires_at")
+    )
 
     if not expires_raw:
         return {
@@ -89,7 +135,6 @@ def check_gandi_domain(domain_data: dict, warn_days: int = 30) -> dict:
         }
 
     try:
-        # Gandi renvoie des dates ISO 8601 : "2025-11-14T00:00:00Z"
         exp = datetime.fromisoformat(expires_raw.replace("Z", "+00:00"))
         if exp.tzinfo is None:
             exp = exp.replace(tzinfo=timezone.utc)
@@ -107,7 +152,6 @@ def check_gandi_domain(domain_data: dict, warn_days: int = 30) -> dict:
             status = "ok"
             msg = f"Valide {days_left}j ({label})"
 
-        # Info renouvellement auto
         if autorenew:
             msg += " — Renouvellement AUTO ✓"
 
@@ -136,10 +180,7 @@ def check_gandi_domain(domain_data: dict, warn_days: int = 30) -> dict:
 
 
 def get_all_gandi_domains_status(warn_days: int = 30) -> tuple[list[dict], Optional[str]]:
-    """
-    Point d'entrée principal.
-    Retourne (liste de résultats, message_erreur_ou_None).
-    """
+    """Point d'entrée principal."""
     api_key = _get_api_key()
     if not api_key:
         return [], "GANDI_API_KEY non définie — ajoutez-la dans vos variables d'environnement"
@@ -149,7 +190,7 @@ def get_all_gandi_domains_status(warn_days: int = 30) -> tuple[list[dict], Optio
     except (ValueError, ConnectionError) as e:
         return [], str(e)
 
-    log.info(f"Gandi : {len(raw_domains)} domaines récupérés")
+    log.info(f"Gandi : {len(raw_domains)} domaines récupérés au total")
 
     results = []
     for d in raw_domains:
