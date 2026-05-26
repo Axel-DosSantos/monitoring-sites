@@ -11,7 +11,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 711,
+      "response_ms": 517,
       "ssl_st": "ok",
       "ssl_msg": "Valide 48j (14/07/2026)",
       "ssl_days": 48,
@@ -21,12 +21,12 @@
       "ndd_days": 282,
       "psi": {
         "status": "ok",
-        "message": "Score 74/100",
-        "score": 74,
-        "lcp_ms": 8782,
-        "cls": 0.007,
-        "fcp_ms": 923,
-        "ttfb_ms": 233,
+        "message": "Score 75/100",
+        "score": 75,
+        "lcp_ms": 7813,
+        "cls": 0.008,
+        "fcp_ms": 1351,
+        "ttfb_ms": 47,
         "strategy": "mobile"
       },
       "stack": {
@@ -39,7 +39,7 @@
       },
       "backup": {},
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "AEIDF",
@@ -52,21 +52,21 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 562,
-      "ssl_st": "ok",
-      "ssl_msg": "Valide 73j (07/08/2026)",
-      "ssl_days": 73,
-      "ssl_issuer": "Sectigo Limited",
+      "response_ms": 641,
+      "ssl_st": "none",
+      "ssl_msg": "Port 443 inaccessible (pas de SSL)",
+      "ssl_days": null,
+      "ssl_issuer": null,
       "ndd_st": "ok",
       "ndd_msg": "Valide 72j (07/08/2026)",
       "ndd_days": 72,
       "psi": {
         "status": "ok",
-        "message": "Score 72/100",
-        "score": 72,
-        "lcp_ms": 5217,
-        "cls": 0.007,
-        "fcp_ms": 3117,
+        "message": "Score 68/100",
+        "score": 68,
+        "lcp_ms": 37120,
+        "cls": 0.0,
+        "fcp_ms": 3008,
         "ttfb_ms": 1,
         "strategy": "mobile"
       },
@@ -88,7 +88,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "AEIDF",
@@ -101,7 +101,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 2079,
+      "response_ms": 2004,
       "ssl_st": "ok",
       "ssl_msg": "Valide 39j (05/07/2026)",
       "ssl_days": 39,
@@ -110,13 +110,13 @@
       "ndd_msg": "Valide 244j (26/01/2027)",
       "ndd_days": 244,
       "psi": {
-        "status": "ok",
-        "message": "Score 45/100",
-        "score": 45,
-        "lcp_ms": 41688,
-        "cls": 0.229,
-        "fcp_ms": 4736,
-        "ttfb_ms": 1,
+        "status": "error",
+        "message": "PSI HTTP 500",
+        "score": null,
+        "lcp_ms": null,
+        "cls": null,
+        "fcp_ms": null,
+        "ttfb_ms": null,
         "strategy": "mobile"
       },
       "stack": {
@@ -129,7 +129,7 @@
       },
       "backup": {},
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "Mairie de Vimpelles",
@@ -142,7 +142,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 634,
+      "response_ms": 476,
       "ssl_st": "ok",
       "ssl_msg": "Valide 178j (20/11/2026)",
       "ssl_days": 178,
@@ -152,12 +152,12 @@
       "ndd_days": 159,
       "psi": {
         "status": "ok",
-        "message": "Score 65/100",
-        "score": 65,
-        "lcp_ms": 11942,
-        "cls": 0.006,
-        "fcp_ms": 2856,
-        "ttfb_ms": 104,
+        "message": "Score 61/100",
+        "score": 61,
+        "lcp_ms": 12058,
+        "cls": 0,
+        "fcp_ms": 3532,
+        "ttfb_ms": 43,
         "strategy": "mobile"
       },
       "stack": {
@@ -178,7 +178,7 @@
         "error": "connexion echouee"
       },
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "Bati-CE",
@@ -191,7 +191,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 1558,
+      "response_ms": 1610,
       "ssl_st": "ok",
       "ssl_msg": "Valide 259j (09/02/2027)",
       "ssl_days": 259,
@@ -201,11 +201,11 @@
       "ndd_days": 277,
       "psi": {
         "status": "ok",
-        "message": "Score 62/100",
-        "score": 62,
-        "lcp_ms": 19233,
-        "cls": 0.069,
-        "fcp_ms": 4408,
+        "message": "Score 61/100",
+        "score": 61,
+        "lcp_ms": 19383,
+        "cls": 0.06,
+        "fcp_ms": 4411,
         "ttfb_ms": 2,
         "strategy": "mobile"
       },
@@ -227,7 +227,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "Cabinet RIBAULT",
@@ -240,7 +240,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 4619,
+      "response_ms": 4640,
       "ssl_st": "none",
       "ssl_msg": "Pas de certificat SSL",
       "ssl_days": null,
@@ -268,7 +268,7 @@
       },
       "backup": {},
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "Caplot",
@@ -281,7 +281,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 1123,
+      "response_ms": 814,
       "ssl_st": "ok",
       "ssl_msg": "Valide 71j (05/08/2026)",
       "ssl_days": 71,
@@ -317,7 +317,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "Caplot",
@@ -330,7 +330,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 543,
+      "response_ms": 579,
       "ssl_st": "ok",
       "ssl_msg": "Valide 141j (14/10/2026)",
       "ssl_days": 141,
@@ -340,12 +340,12 @@
       "ndd_days": null,
       "psi": {
         "status": "ok",
-        "message": "Score 72/100",
-        "score": 72,
-        "lcp_ms": 5702,
-        "cls": 0.006,
-        "fcp_ms": 3156,
-        "ttfb_ms": 5,
+        "message": "Score 68/100",
+        "score": 68,
+        "lcp_ms": 15602,
+        "cls": 0.008,
+        "fcp_ms": 3185,
+        "ttfb_ms": 3,
         "strategy": "mobile"
       },
       "stack": {
@@ -366,7 +366,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "Albys",
@@ -379,7 +379,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 3756,
+      "response_ms": 342,
       "ssl_st": "ok",
       "ssl_msg": "Valide 34j (29/06/2026)",
       "ssl_days": 34,
@@ -389,12 +389,12 @@
       "ndd_days": 195,
       "psi": {
         "status": "ok",
-        "message": "Score 59/100",
-        "score": 59,
-        "lcp_ms": 15016,
-        "cls": 0.029,
-        "fcp_ms": 3502,
-        "ttfb_ms": 1,
+        "message": "Score 61/100",
+        "score": 61,
+        "lcp_ms": 15179,
+        "cls": 0.034,
+        "fcp_ms": 3503,
+        "ttfb_ms": null,
         "strategy": "mobile"
       },
       "stack": {
@@ -407,7 +407,7 @@
       },
       "backup": {},
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "Lead-Portage",
@@ -420,7 +420,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 1529,
+      "response_ms": 800,
       "ssl_st": "ok",
       "ssl_msg": "Valide 136j (09/10/2026)",
       "ssl_days": 136,
@@ -430,11 +430,11 @@
       "ndd_days": 188,
       "psi": {
         "status": "ok",
-        "message": "Score 80/100",
-        "score": 80,
-        "lcp_ms": 3765,
+        "message": "Score 66/100",
+        "score": 66,
+        "lcp_ms": 12524,
         "cls": 0.001,
-        "fcp_ms": 3765,
+        "fcp_ms": 3757,
         "ttfb_ms": 1,
         "strategy": "mobile"
       },
@@ -456,7 +456,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "SelNHelp",
@@ -469,7 +469,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 573,
+      "response_ms": 476,
       "ssl_st": "ok",
       "ssl_msg": "Valide 259j (09/02/2027)",
       "ssl_days": 259,
@@ -505,7 +505,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "ISYTEM",
@@ -518,7 +518,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 850,
+      "response_ms": 637,
       "ssl_st": "ok",
       "ssl_msg": "Valide 207j (19/12/2026)",
       "ssl_days": 207,
@@ -528,12 +528,12 @@
       "ndd_days": 65,
       "psi": {
         "status": "ok",
-        "message": "Score 89/100",
-        "score": 89,
-        "lcp_ms": 3103,
+        "message": "Score 90/100",
+        "score": 90,
+        "lcp_ms": 3008,
         "cls": 0,
-        "fcp_ms": 2725,
-        "ttfb_ms": 2,
+        "fcp_ms": 2708,
+        "ttfb_ms": 1,
         "strategy": "mobile"
       },
       "stack": {
@@ -554,7 +554,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     },
     {
       "client": "DRAVEIL HANDBALL",
@@ -567,7 +567,7 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 2405,
+      "response_ms": 2288,
       "ssl_st": "ok",
       "ssl_msg": "Valide 140j (13/10/2026)",
       "ssl_days": 140,
@@ -577,12 +577,12 @@
       "ndd_days": 136,
       "psi": {
         "status": "ok",
-        "message": "Score 69/100",
-        "score": 69,
-        "lcp_ms": 8401,
+        "message": "Score 63/100",
+        "score": 63,
+        "lcp_ms": 8551,
         "cls": 0.0,
         "fcp_ms": 2585,
-        "ttfb_ms": 5,
+        "ttfb_ms": 4,
         "strategy": "mobile"
       },
       "stack": {
@@ -603,10 +603,10 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "26/05/2026 14:15"
+      "checked": "26/05/2026 14:26"
     }
   ],
-  "last_run": "26/05/2026 14:15",
+  "last_run": "26/05/2026 14:26",
   "running": false,
   "psi_enabled": true
 }

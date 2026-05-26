@@ -3,9 +3,9 @@
     {
       "fqdn": "albys.net",
       "expires_iso": "2027-07-29",
-      "days_left": 429,
+      "days_left": 428,
       "status": "ok",
-      "message": "Valide 429j (29/07/2027)",
+      "message": "Valide 428j (29/07/2027)",
       "autorenew": false,
       "nameservers": [],
       "tld": "net"
@@ -271,7 +271,7 @@
       "tld": "net"
     }
   ],
-  "last_run": "26/05/2026 14:21",
+  "last_run": "26/05/2026 14:32",
   "total": 27,
   "critiques": 0,
   "warnings": 0
