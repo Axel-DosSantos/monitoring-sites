@@ -21,6 +21,7 @@ import history
 
 BASE_DIR = Path(__file__).parent
 RESULTS_JSON = BASE_DIR / "results.json"
+RESULTS_GANDI_JSON = BASE_DIR / "results_gandi.json"
 HISTORY_DB = BASE_DIR / "history.db"
 
 app = Flask(
@@ -42,6 +43,24 @@ def load_results() -> dict:
     except Exception as e:
         log.error(f"Erreur lecture results.json : {e}")
         return {"sites": [], "last_run": None, "running": False}
+
+
+def load_gandi_results() -> dict:
+    if not RESULTS_GANDI_JSON.exists():
+        return {"domains": [], "last_run": None}
+    try:
+        return json.loads(RESULTS_GANDI_JSON.read_text(encoding="utf-8"))
+    except Exception as e:
+        log.error(f"Erreur lecture results_gandi.json : {e}")
+        return {"domains": [], "last_run": None}
+
+
+def gandi_stats(domains: list[dict]) -> dict:
+    total = len(domains)
+    critiques = sum(1 for d in domains if d.get("status") == "critical")
+    warnings = sum(1 for d in domains if d.get("status") == "warning")
+    autorenew_off = sum(1 for d in domains if not d.get("autorenew") and d.get("status") in ("warning", "critical"))
+    return {"total": total, "critiques": critiques, "warnings": warnings, "autorenew_off": autorenew_off}
 
 
 def health_score(site: dict) -> int:
@@ -111,12 +130,21 @@ def dashboard():
     for s in sites:
         s["health_score"] = health_score(s)
     stats = overall_stats(sites)
+    gandi_data = load_gandi_results()
+    gandi_domains = sorted(
+        gandi_data.get("domains", []),
+        key=lambda d: d.get("days_left") if d.get("days_left") is not None else 9999,
+    )
+    g_stats = gandi_stats(gandi_domains)
     return render_template(
         "dashboard.html",
         sites=sites,
         stats=stats,
         last_run=data.get("last_run"),
         running=data.get("running", False),
+        gandi_domains=gandi_domains,
+        gandi_stats=g_stats,
+        gandi_last_run=gandi_data.get("last_run"),
     )
 
 
