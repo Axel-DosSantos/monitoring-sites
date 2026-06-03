@@ -3,9 +3,9 @@
     {
       "fqdn": "albys.net",
       "expires_iso": "2027-07-29",
-      "days_left": 422,
+      "days_left": 421,
       "status": "ok",
-      "message": "Valide 422j (29/07/2027)",
+      "message": "Valide 421j (29/07/2027)",
       "autorenew": false,
       "nameservers": [],
       "tld": "net"
@@ -13,9 +13,9 @@
     {
       "fqdn": "autismeenidf.org",
       "expires_iso": "2026-08-07",
-      "days_left": 65,
+      "days_left": 64,
       "status": "ok",
-      "message": "Valide 65j (07/08/2026)",
+      "message": "Valide 64j (07/08/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "org"
@@ -23,9 +23,9 @@
     {
       "fqdn": "cs2di.com",
       "expires_iso": "2026-11-06",
-      "days_left": 157,
+      "days_left": 156,
       "status": "ok",
-      "message": "Valide 157j (06/11/2026)",
+      "message": "Valide 156j (06/11/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "com"
@@ -33,9 +33,9 @@
     {
       "fqdn": "darwin.legal",
       "expires_iso": "2026-10-25",
-      "days_left": 145,
+      "days_left": 144,
       "status": "ok",
-      "message": "Valide 145j (25/10/2026)",
+      "message": "Valide 144j (25/10/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "legal"
@@ -43,9 +43,9 @@
     {
       "fqdn": "draveil-handball.com",
       "expires_iso": "2027-03-30",
-      "days_left": 301,
+      "days_left": 300,
       "status": "ok",
-      "message": "Valide 301j (30/03/2027)",
+      "message": "Valide 300j (30/03/2027)",
       "autorenew": false,
       "nameservers": [],
       "tld": "com"
@@ -53,9 +53,9 @@
     {
       "fqdn": "draveil-handball.fr",
       "expires_iso": "2026-10-10",
-      "days_left": 130,
+      "days_left": 129,
       "status": "ok",
-      "message": "Valide 130j (10/10/2026)",
+      "message": "Valide 129j (10/10/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "fr"
@@ -63,9 +63,9 @@
     {
       "fqdn": "entreprendre-encore.com",
       "expires_iso": "2026-07-22",
-      "days_left": 49,
+      "days_left": 48,
       "status": "ok",
-      "message": "Valide 49j (22/07/2026)",
+      "message": "Valide 48j (22/07/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "com"
@@ -73,9 +73,9 @@
     {
       "fqdn": "entreprendre-encore.eu",
       "expires_iso": "2026-07-22",
-      "days_left": 50,
+      "days_left": 49,
       "status": "ok",
-      "message": "Valide 50j (22/07/2026)",
+      "message": "Valide 49j (22/07/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "eu"
@@ -83,9 +83,9 @@
     {
       "fqdn": "entreprendre-encore.fr",
       "expires_iso": "2026-07-22",
-      "days_left": 49,
+      "days_left": 48,
       "status": "ok",
-      "message": "Valide 49j (22/07/2026)",
+      "message": "Valide 48j (22/07/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "fr"
@@ -93,9 +93,9 @@
     {
       "fqdn": "holdjust.com",
       "expires_iso": "2026-11-06",
-      "days_left": 157,
+      "days_left": 156,
       "status": "ok",
-      "message": "Valide 157j (06/11/2026)",
+      "message": "Valide 156j (06/11/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "com"
@@ -103,9 +103,9 @@
     {
       "fqdn": "holdjust.fr",
       "expires_iso": "2026-11-06",
-      "days_left": 157,
+      "days_left": 156,
       "status": "ok",
-      "message": "Valide 157j (06/11/2026)",
+      "message": "Valide 156j (06/11/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "fr"
@@ -113,9 +113,9 @@
     {
       "fqdn": "holdjust.net",
       "expires_iso": "2026-11-06",
-      "days_left": 157,
+      "days_left": 156,
       "status": "ok",
-      "message": "Valide 157j (06/11/2026)",
+      "message": "Valide 156j (06/11/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "net"
@@ -123,9 +123,9 @@
     {
       "fqdn": "idec91.fr",
       "expires_iso": "2026-09-24",
-      "days_left": 113,
+      "days_left": 112,
       "status": "ok",
-      "message": "Valide 113j (24/09/2026)",
+      "message": "Valide 112j (24/09/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "fr"
@@ -133,9 +133,9 @@
     {
       "fqdn": "isytem.com",
       "expires_iso": "2026-07-31",
-      "days_left": 58,
+      "days_left": 57,
       "status": "ok",
-      "message": "Valide 58j (31/07/2026)",
+      "message": "Valide 57j (31/07/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "com"
@@ -143,9 +143,9 @@
     {
       "fqdn": "isytem.fr",
       "expires_iso": "2026-07-31",
-      "days_left": 58,
+      "days_left": 57,
       "status": "ok",
-      "message": "Valide 58j (31/07/2026)",
+      "message": "Valide 57j (31/07/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "fr"
@@ -153,9 +153,9 @@
     {
       "fqdn": "isytem.net",
       "expires_iso": "2026-07-31",
-      "days_left": 58,
+      "days_left": 57,
       "status": "ok",
-      "message": "Valide 58j (31/07/2026)",
+      "message": "Valide 57j (31/07/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "net"
@@ -163,9 +163,9 @@
     {
       "fqdn": "labuoncom.com",
       "expires_iso": "2026-09-26",
-      "days_left": 116,
+      "days_left": 115,
       "status": "ok",
-      "message": "Valide 116j (26/09/2026)",
+      "message": "Valide 115j (26/09/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "com"
@@ -173,9 +173,9 @@
     {
       "fqdn": "labuoncom.fr",
       "expires_iso": "2026-09-26",
-      "days_left": 116,
+      "days_left": 115,
       "status": "ok",
-      "message": "Valide 116j (26/09/2026)",
+      "message": "Valide 115j (26/09/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "fr"
@@ -183,9 +183,9 @@
     {
       "fqdn": "labuoncom.net",
       "expires_iso": "2026-09-26",
-      "days_left": 116,
+      "days_left": 115,
       "status": "ok",
-      "message": "Valide 116j (26/09/2026)",
+      "message": "Valide 115j (26/09/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "net"
@@ -193,9 +193,9 @@
     {
       "fqdn": "lead-portage.com",
       "expires_iso": "2026-11-30",
-      "days_left": 181,
+      "days_left": 180,
       "status": "ok",
-      "message": "Valide 181j (30/11/2026)",
+      "message": "Valide 180j (30/11/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "com"
@@ -203,9 +203,9 @@
     {
       "fqdn": "lead-portage.fr",
       "expires_iso": "2026-11-30",
-      "days_left": 181,
+      "days_left": 180,
       "status": "ok",
-      "message": "Valide 181j (30/11/2026)",
+      "message": "Valide 180j (30/11/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "fr"
@@ -213,9 +213,9 @@
     {
       "fqdn": "leadportage.com",
       "expires_iso": "2026-11-30",
-      "days_left": 181,
+      "days_left": 180,
       "status": "ok",
-      "message": "Valide 181j (30/11/2026)",
+      "message": "Valide 180j (30/11/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "com"
@@ -223,9 +223,9 @@
     {
       "fqdn": "leadportage.fr",
       "expires_iso": "2026-11-30",
-      "days_left": 181,
+      "days_left": 180,
       "status": "ok",
-      "message": "Valide 181j (30/11/2026)",
+      "message": "Valide 180j (30/11/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "fr"
@@ -233,9 +233,9 @@
     {
       "fqdn": "support-albys.com",
       "expires_iso": "2026-12-14",
-      "days_left": 195,
+      "days_left": 194,
       "status": "ok",
-      "message": "Valide 195j (14/12/2026)",
+      "message": "Valide 194j (14/12/2026)",
       "autorenew": false,
       "nameservers": [],
       "tld": "com"
@@ -243,9 +243,9 @@
     {
       "fqdn": "talenys.com",
       "expires_iso": "2027-03-13",
-      "days_left": 283,
+      "days_left": 282,
       "status": "ok",
-      "message": "Valide 283j (13/03/2027)",
+      "message": "Valide 282j (13/03/2027)",
       "autorenew": false,
       "nameservers": [],
       "tld": "com"
@@ -253,9 +253,9 @@
     {
       "fqdn": "talenys.fr",
       "expires_iso": "2027-03-13",
-      "days_left": 283,
+      "days_left": 282,
       "status": "ok",
-      "message": "Valide 283j (13/03/2027)",
+      "message": "Valide 282j (13/03/2027)",
       "autorenew": false,
       "nameservers": [],
       "tld": "fr"
@@ -263,15 +263,15 @@
     {
       "fqdn": "talenys.net",
       "expires_iso": "2027-03-13",
-      "days_left": 283,
+      "days_left": 282,
       "status": "ok",
-      "message": "Valide 283j (13/03/2027)",
+      "message": "Valide 282j (13/03/2027)",
       "autorenew": false,
       "nameservers": [],
       "tld": "net"
     }
   ],
-  "last_run": "02/06/2026 11:25",
+  "last_run": "03/06/2026 12:04",
   "total": 27,
   "critiques": 0,
   "warnings": 0
