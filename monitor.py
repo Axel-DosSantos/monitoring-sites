@@ -204,7 +204,7 @@ def run(test_mode: bool = False, run_psi: bool = False):
         try:
             is_up, up_msg, response_ms, http_status = check_uptime(url, timeout)
             ssl_st, ssl_msg, ssl_days, ssl_issuer, ssl_expires_iso = check_ssl(url, ssl_warn)
-            ndd_st, ndd_msg, ndd_days = check_domain(url, ndd_warn)
+            ndd_st, ndd_msg, ndd_days, ndd_expires_iso = check_domain(url, ndd_warn)
             stack_info = check_stack(url)
             psi = {}
             if run_psi:
