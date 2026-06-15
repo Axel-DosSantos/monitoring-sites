@@ -217,24 +217,41 @@ def run(test_mode: bool = False, run_psi: bool = False):
         backup = backup_index.get(domaine_str.lower(), {})
 
         # Construction des alertes
+        # Chaque alerte : (titre, detail, priorite, categorie, expires_iso, days_left)
         issues = []
         if not is_up:
-            issues.append(("Site DOWN", up_msg, 1))
+            issues.append(("Site DOWN", up_msg, 1, "down", None, None))
         if ssl_st == "critical":
-            issues.append(("SSL CRITIQUE", ssl_msg, 1))
+            issues.append(("SSL CRITIQUE", ssl_msg, 1, "ssl", ssl_expires_iso, ssl_days))
         elif ssl_st == "warning":
-            issues.append(("SSL EXPIRATION", ssl_msg, 2))
+            issues.append(("SSL EXPIRATION", ssl_msg, 2, "ssl", ssl_expires_iso, ssl_days))
         if ndd_st == "critical":
-            issues.append(("NDD CRITIQUE", ndd_msg, 1))
+            issues.append(("NDD CRITIQUE", ndd_msg, 1, "ndd", ndd_expires_iso, ndd_days))
         elif ndd_st == "warning":
-            issues.append(("NDD EXPIRATION", ndd_msg, 2))
+            issues.append(("NDD EXPIRATION", ndd_msg, 2, "ndd", ndd_expires_iso, ndd_days))
         if backup.get("status") == "critical":
-            issues.append(("BACKUP MANQUANT", f"Dernier backup il y a {backup.get('days_since')}j", 2))
+            issues.append(("BACKUP MANQUANT", f"Dernier backup il y a {backup.get('days_since')}j", 2, "backup", None, None))
         # NOTE : PHP obsolete — pas d'email (éviterait de spammer chaque jour).
         # L'info reste visible dans le dashboard via stack_info.php_outdated.
 
+        # Reset des alertes sticky quand l'incident est resolu
+        if is_up:
+            history.mark_resolved(HISTORY_DB, domaine_str, "down")
+        if backup.get("status") != "critical":
+            history.mark_resolved(HISTORY_DB, domaine_str, "backup")
+
         ticket_ids = []
-        for title_prefix, detail, _ in issues:
+        for title_prefix, detail, _, category, expires_iso, days_left in issues:
+            # Verifier si on doit envoyer une alerte (deduplication J-30/J-15/J-7/sticky)
+            should_send, alert_type = history.should_send_alert(
+                HISTORY_DB, domaine_str, category,
+                expires_iso=expires_iso,
+                days_left=days_left,
+            )
+            if not should_send:
+                log.info(f"  {title_prefix}: alerte deja envoyee recemment — ignoree")
+                continue
+
             subject = f"[MONITORING] {title_prefix} - {client} ({url})"
             body = (
                 f"Client    : {client}\n"
@@ -248,6 +265,10 @@ def run(test_mode: bool = False, run_psi: bool = False):
             )
             ok = send_support_email(cfg, subject, body)
             if ok:
+                history.mark_alert_sent(
+                    HISTORY_DB, domaine_str, category, alert_type,
+                    expires_iso=expires_iso,
+                )
                 ticket_ids.append("email envoye")
             log.warning(f"  {title_prefix}: {detail}")
 
