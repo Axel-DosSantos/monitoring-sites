@@ -106,8 +106,9 @@ def _send_email(to_addr, subject: str, body: str, cfg: dict) -> bool:
 
 
 def send_support_email(cfg: dict, subject: str, body: str) -> bool:
+    """Envoie une alerte au support ET a axel.dos-santos@albys.com."""
     support = os.environ.get("EMAIL_SUPPORT", cfg.get("Email support", "supportcsm@albys.com"))
-    axel = os.environ.get("EMAIL_AXEL", cfg.get("Email axel", "axel.dos-santos@albys.com"))
+    axel    = os.environ.get("EMAIL_AXEL",    cfg.get("Email axel",    "axel.dos-santos@albys.com"))
     to_list = list(dict.fromkeys(filter(None, [support, axel])))
     log.info(f"Envoi email vers {', '.join(to_list)}...")
     return _send_email(to_list, subject, body, cfg)
