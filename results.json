@@ -11,22 +11,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 689,
+      "response_ms": 795,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 86j (04/12/2026)",
-      "ssl_days": 86,
+      "ssl_msg": "Valide 85j (04/12/2026)",
+      "ssl_days": 85,
       "ssl_issuer": "Let's Encrypt",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 177j (05/03/2027)",
-      "ndd_days": 177,
+      "ndd_msg": "Valide 176j (05/03/2027)",
+      "ndd_days": 176,
       "psi": {
-        "status": "ok",
-        "message": "Score 76/100",
-        "score": 76,
-        "lcp_ms": 6690,
-        "cls": 0.012,
-        "fcp_ms": 930,
-        "ttfb_ms": 217,
+        "status": "error",
+        "message": "PSI HTTP 500",
+        "score": null,
+        "lcp_ms": null,
+        "cls": null,
+        "fcp_ms": null,
+        "ttfb_ms": null,
         "strategy": "mobile"
       },
       "stack": {
@@ -39,7 +39,7 @@
       },
       "backup": {},
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "AEIDF",
@@ -52,22 +52,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 783,
+      "response_ms": 476,
       "ssl_st": "none",
       "ssl_msg": "Port 443 inaccessible (pas de SSL)",
       "ssl_days": null,
       "ssl_issuer": null,
       "ndd_st": "ok",
-      "ndd_msg": "Valide 332j (07/08/2027)",
-      "ndd_days": 332,
+      "ndd_msg": "Valide 331j (07/08/2027)",
+      "ndd_days": 331,
       "psi": {
         "status": "ok",
-        "message": "Score 84/100",
-        "score": 84,
-        "lcp_ms": 2988,
-        "cls": 0,
-        "fcp_ms": 1668,
-        "ttfb_ms": 2,
+        "message": "Score 68/100",
+        "score": 68,
+        "lcp_ms": 36374,
+        "cls": 0.007,
+        "fcp_ms": 3152,
+        "ttfb_ms": 4,
         "strategy": "mobile"
       },
       "stack": {
@@ -88,7 +88,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "AEIDF",
@@ -101,22 +101,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 2849,
+      "response_ms": 2204,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 54j (02/11/2026)",
-      "ssl_days": 54,
+      "ssl_msg": "Valide 53j (02/11/2026)",
+      "ssl_days": 53,
       "ssl_issuer": "Let's Encrypt",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 139j (26/01/2027)",
-      "ndd_days": 139,
+      "ndd_msg": "Valide 138j (26/01/2027)",
+      "ndd_days": 138,
       "psi": {
         "status": "ok",
-        "message": "Score 43/100",
-        "score": 43,
-        "lcp_ms": 5297,
-        "cls": 0.368,
-        "fcp_ms": 4778,
-        "ttfb_ms": 15,
+        "message": "Score 37/100",
+        "score": 37,
+        "lcp_ms": 24925,
+        "cls": 0.269,
+        "fcp_ms": 4737,
+        "ttfb_ms": 1,
         "strategy": "mobile"
       },
       "stack": {
@@ -129,7 +129,7 @@
       },
       "backup": {},
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "Mairie de Vimpelles",
@@ -142,22 +142,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 693,
+      "response_ms": 814,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 73j (20/11/2026)",
-      "ssl_days": 73,
+      "ssl_msg": "Valide 72j (20/11/2026)",
+      "ssl_days": 72,
       "ssl_issuer": "Sectigo Limited",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 55j (02/11/2026)",
-      "ndd_days": 55,
+      "ndd_msg": "Valide 54j (02/11/2026)",
+      "ndd_days": 54,
       "psi": {
-        "status": "ok",
-        "message": "Score 68/100",
-        "score": 68,
-        "lcp_ms": 11296,
-        "cls": 0.006,
-        "fcp_ms": 2856,
-        "ttfb_ms": 7,
+        "status": "error",
+        "message": "PSI HTTP 500",
+        "score": null,
+        "lcp_ms": null,
+        "cls": null,
+        "fcp_ms": null,
+        "ttfb_ms": null,
         "strategy": "mobile"
       },
       "stack": {
@@ -178,7 +178,7 @@
         "error": "connexion echouee"
       },
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "Bati-CE",
@@ -191,21 +191,21 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 2912,
+      "response_ms": 1657,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 154j (09/02/2027)",
-      "ssl_days": 154,
+      "ssl_msg": "Valide 153j (09/02/2027)",
+      "ssl_days": 153,
       "ssl_issuer": "Sectigo Limited",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 172j (28/02/2027)",
-      "ndd_days": 172,
+      "ndd_msg": "Valide 171j (28/02/2027)",
+      "ndd_days": 171,
       "psi": {
         "status": "ok",
-        "message": "Score 62/100",
-        "score": 62,
-        "lcp_ms": 19248,
-        "cls": 0.072,
-        "fcp_ms": 4397,
+        "message": "Score 58/100",
+        "score": 58,
+        "lcp_ms": 19383,
+        "cls": 0.132,
+        "fcp_ms": 4441,
         "ttfb_ms": 101,
         "strategy": "mobile"
       },
@@ -227,7 +227,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "Caplot",
@@ -240,21 +240,21 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 769,
+      "response_ms": 856,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 152j (07/02/2027)",
-      "ssl_days": 152,
+      "ssl_msg": "Valide 151j (07/02/2027)",
+      "ssl_days": 151,
       "ssl_issuer": "SSL Corporation",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 316j (22/07/2027)",
-      "ndd_days": 316,
+      "ndd_msg": "Valide 315j (22/07/2027)",
+      "ndd_days": 315,
       "psi": {
         "status": "ok",
-        "message": "Score 61/100",
-        "score": 61,
-        "lcp_ms": 7539,
+        "message": "Score 66/100",
+        "score": 66,
+        "lcp_ms": 7696,
         "cls": 0,
-        "fcp_ms": 3819,
+        "fcp_ms": 3761,
         "ttfb_ms": 2,
         "strategy": "mobile"
       },
@@ -276,7 +276,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "Caplot",
@@ -289,22 +289,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 812,
+      "response_ms": 1029,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 36j (14/10/2026)",
-      "ssl_days": 36,
+      "ssl_msg": "Valide 35j (14/10/2026)",
+      "ssl_days": 35,
       "ssl_issuer": "Sectigo Limited",
       "ndd_st": "error",
       "ndd_msg": "Whois command returned no output",
       "ndd_days": null,
       "psi": {
         "status": "ok",
-        "message": "Score 69/100",
-        "score": 69,
-        "lcp_ms": 6001,
+        "message": "Score 83/100",
+        "score": 83,
+        "lcp_ms": 3306,
         "cls": 0.006,
         "fcp_ms": 3156,
-        "ttfb_ms": 104,
+        "ttfb_ms": 140,
         "strategy": "mobile"
       },
       "stack": {
@@ -325,7 +325,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "Albys",
@@ -338,22 +338,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 307,
+      "response_ms": 263,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 51j (29/10/2026)",
-      "ssl_days": 51,
+      "ssl_msg": "Valide 50j (29/10/2026)",
+      "ssl_days": 50,
       "ssl_issuer": "Let's Encrypt",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 90j (07/12/2026)",
-      "ndd_days": 90,
+      "ndd_msg": "Valide 89j (07/12/2026)",
+      "ndd_days": 89,
       "psi": {
         "status": "ok",
-        "message": "Score 63/100",
-        "score": 63,
-        "lcp_ms": 13888,
-        "cls": 0.017,
-        "fcp_ms": 2075,
-        "ttfb_ms": 2,
+        "message": "Score 59/100",
+        "score": 59,
+        "lcp_ms": 15128,
+        "cls": 0.03,
+        "fcp_ms": 3493,
+        "ttfb_ms": 1,
         "strategy": "mobile"
       },
       "stack": {
@@ -366,7 +366,7 @@
       },
       "backup": {},
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "Albys",
@@ -379,21 +379,21 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 281,
+      "response_ms": 280,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 51j (29/10/2026)",
-      "ssl_days": 51,
+      "ssl_msg": "Valide 50j (29/10/2026)",
+      "ssl_days": 50,
       "ssl_issuer": "Let's Encrypt",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 90j (07/12/2026)",
-      "ndd_days": 90,
+      "ndd_msg": "Valide 89j (07/12/2026)",
+      "ndd_days": 89,
       "psi": {
         "status": "ok",
-        "message": "Score 56/100",
-        "score": 56,
-        "lcp_ms": 9751,
-        "cls": 0.017,
-        "fcp_ms": 5561,
+        "message": "Score 60/100",
+        "score": 60,
+        "lcp_ms": 15265,
+        "cls": 0.034,
+        "fcp_ms": 3513,
         "ttfb_ms": 1,
         "strategy": "mobile"
       },
@@ -407,7 +407,7 @@
       },
       "backup": {},
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "Lead-Portage",
@@ -420,21 +420,21 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 789,
-      "ssl_st": "ok",
-      "ssl_msg": "Valide 31j (09/10/2026)",
-      "ssl_days": 31,
+      "response_ms": 716,
+      "ssl_st": "warning",
+      "ssl_msg": "Expire dans 30j (09/10/2026)",
+      "ssl_days": 30,
       "ssl_issuer": "Sectigo Limited",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 83j (30/11/2026)",
-      "ndd_days": 83,
+      "ndd_msg": "Valide 82j (30/11/2026)",
+      "ndd_days": 82,
       "psi": {
         "status": "ok",
-        "message": "Score 74/100",
-        "score": 74,
-        "lcp_ms": 4814,
+        "message": "Score 80/100",
+        "score": 80,
+        "lcp_ms": 3766,
         "cls": 0.001,
-        "fcp_ms": 3764,
+        "fcp_ms": 3766,
         "ttfb_ms": 1,
         "strategy": "mobile"
       },
@@ -455,8 +455,10 @@
         "file": null,
         "error": "telechargement echoue"
       },
-      "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "tickets": [
+        "email envoye"
+      ],
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "Lead-Portage",
@@ -469,22 +471,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 419,
-      "ssl_st": "ok",
-      "ssl_msg": "Valide 31j (09/10/2026)",
-      "ssl_days": 31,
+      "response_ms": 538,
+      "ssl_st": "warning",
+      "ssl_msg": "Expire dans 30j (09/10/2026)",
+      "ssl_days": 30,
       "ssl_issuer": "Sectigo Limited",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 83j (30/11/2026)",
-      "ndd_days": 83,
+      "ndd_msg": "Valide 82j (30/11/2026)",
+      "ndd_days": 82,
       "psi": {
         "status": "ok",
-        "message": "Score 86/100",
-        "score": 86,
-        "lcp_ms": 3315,
-        "cls": 0.001,
-        "fcp_ms": 3165,
-        "ttfb_ms": null,
+        "message": "Score 65/100",
+        "score": 65,
+        "lcp_ms": 12547,
+        "cls": 0,
+        "fcp_ms": 3759,
+        "ttfb_ms": 2,
         "strategy": "mobile"
       },
       "stack": {
@@ -496,8 +498,10 @@
         "generator": null
       },
       "backup": {},
-      "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "tickets": [
+        "email envoye"
+      ],
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "SelNHelp",
@@ -510,22 +514,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 611,
+      "response_ms": 783,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 154j (09/02/2027)",
-      "ssl_days": 154,
+      "ssl_msg": "Valide 153j (09/02/2027)",
+      "ssl_days": 153,
       "ssl_issuer": "Sectigo Limited",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 73j (20/11/2026)",
-      "ndd_days": 73,
+      "ndd_msg": "Valide 72j (20/11/2026)",
+      "ndd_days": 72,
       "psi": {
         "status": "ok",
-        "message": "Score 66/100",
-        "score": 66,
-        "lcp_ms": 7660,
+        "message": "Score 67/100",
+        "score": 67,
+        "lcp_ms": 6976,
         "cls": 0.044,
-        "fcp_ms": 3190,
-        "ttfb_ms": 142,
+        "fcp_ms": 3189,
+        "ttfb_ms": 103,
         "strategy": "mobile"
       },
       "stack": {
@@ -546,7 +550,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "IDEC",
@@ -559,22 +563,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 625,
+      "response_ms": 766,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 154j (09/02/2027)",
-      "ssl_days": 154,
+      "ssl_msg": "Valide 153j (09/02/2027)",
+      "ssl_days": 153,
       "ssl_issuer": "Sectigo Limited",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 73j (20/11/2026)",
-      "ndd_days": 73,
+      "ndd_msg": "Valide 72j (20/11/2026)",
+      "ndd_days": 72,
       "psi": {
         "status": "ok",
-        "message": "Score 60/100",
-        "score": 60,
-        "lcp_ms": 7970,
-        "cls": 0.007,
-        "fcp_ms": 4823,
-        "ttfb_ms": 107,
+        "message": "Score 67/100",
+        "score": 67,
+        "lcp_ms": 7592,
+        "cls": 0.044,
+        "fcp_ms": 3015,
+        "ttfb_ms": 141,
         "strategy": "mobile"
       },
       "stack": {
@@ -587,7 +591,7 @@
       },
       "backup": {},
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "ISYTEM",
@@ -600,21 +604,21 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 754,
+      "response_ms": 670,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 102j (19/12/2026)",
-      "ssl_days": 102,
+      "ssl_msg": "Valide 101j (19/12/2026)",
+      "ssl_days": 101,
       "ssl_issuer": "Sectigo Limited",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 325j (31/07/2027)",
-      "ndd_days": 325,
+      "ndd_msg": "Valide 324j (31/07/2027)",
+      "ndd_days": 324,
       "psi": {
         "status": "ok",
-        "message": "Score 81/100",
-        "score": 81,
-        "lcp_ms": 3024,
+        "message": "Score 90/100",
+        "score": 90,
+        "lcp_ms": 2975,
         "cls": 0.005,
-        "fcp_ms": 2572,
+        "fcp_ms": 2749,
         "ttfb_ms": 2,
         "strategy": "mobile"
       },
@@ -636,7 +640,7 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "ISYTEM",
@@ -649,22 +653,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 568,
+      "response_ms": 641,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 102j (19/12/2026)",
-      "ssl_days": 102,
+      "ssl_msg": "Valide 101j (19/12/2026)",
+      "ssl_days": 101,
       "ssl_issuer": "Sectigo Limited",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 325j (31/07/2027)",
-      "ndd_days": 325,
+      "ndd_msg": "Valide 324j (31/07/2027)",
+      "ndd_days": 324,
       "psi": {
         "status": "ok",
-        "message": "Score 63/100",
-        "score": 63,
-        "lcp_ms": 4997,
-        "cls": 0.004,
-        "fcp_ms": 4949,
-        "ttfb_ms": 2,
+        "message": "Score 89/100",
+        "score": 89,
+        "lcp_ms": 3025,
+        "cls": 0.005,
+        "fcp_ms": 2723,
+        "ttfb_ms": 1,
         "strategy": "mobile"
       },
       "stack": {
@@ -677,7 +681,7 @@
       },
       "backup": {},
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     },
     {
       "client": "DRAVEIL HANDBALL",
@@ -690,22 +694,22 @@
       "up": true,
       "up_msg": "HTTP 200",
       "http_status": 200,
-      "response_ms": 1671,
+      "response_ms": 1765,
       "ssl_st": "ok",
-      "ssl_msg": "Valide 35j (13/10/2026)",
-      "ssl_days": 35,
+      "ssl_msg": "Valide 34j (13/10/2026)",
+      "ssl_days": 34,
       "ssl_issuer": "Sectigo Limited",
       "ndd_st": "ok",
-      "ndd_msg": "Valide 32j (10/10/2026)",
-      "ndd_days": 32,
+      "ndd_msg": "Valide 31j (10/10/2026)",
+      "ndd_days": 31,
       "psi": {
         "status": "ok",
-        "message": "Score 65/100",
-        "score": 65,
+        "message": "Score 69/100",
+        "score": 69,
         "lcp_ms": 8551,
         "cls": 0.0,
-        "fcp_ms": 2585,
-        "ttfb_ms": 99,
+        "fcp_ms": 2584,
+        "ttfb_ms": 96,
         "strategy": "mobile"
       },
       "stack": {
@@ -726,10 +730,10 @@
         "error": "telechargement echoue"
       },
       "tickets": [],
-      "checked": "08/09/2026 12:02"
+      "checked": "09/09/2026 12:12"
     }
   ],
-  "last_run": "08/09/2026 12:02",
+  "last_run": "09/09/2026 12:12",
   "running": false,
   "psi_enabled": true
 }
