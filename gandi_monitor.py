@@ -49,6 +49,7 @@ log = logging.getLogger(__name__)
 from checks.gandi import get_all_gandi_domains_status
 from monitor import load_config, send_support_email, _send_email
 import history
+from exclusions import load_exclusions, match as match_exclusion
 
 
 # ── Envoi des alertes Gandi ───────────────────────────────────────────────────
@@ -84,6 +85,8 @@ def send_gandi_alerts(results: list[dict], cfg: dict, now: str) -> int:
     sent_count = 0
 
     for r in results:
+        if r.get("muted"):
+            continue
         if r["status"] not in ("warning", "critical"):
             continue
 
@@ -142,10 +145,12 @@ def send_test_report(results: list[dict], cfg: dict, now: str):
     to_addr = os.environ.get("EMAIL_AXEL", cfg.get("Email axel", "axel.dos-santos@albys.com"))
     subject = f"[GANDI] Rapport complet des domaines — {now}"
 
-    critiques = [r for r in results if r["status"] == "critical"]
-    warnings  = [r for r in results if r["status"] == "warning"]
-    ok_list   = [r for r in results if r["status"] == "ok"]
-    autres    = [r for r in results if r["status"] not in ("ok", "warning", "critical")]
+    muted     = [r for r in results if r.get("muted")]
+    actifs    = [r for r in results if not r.get("muted")]
+    critiques = [r for r in actifs if r["status"] == "critical"]
+    warnings  = [r for r in actifs if r["status"] == "warning"]
+    ok_list   = [r for r in actifs if r["status"] == "ok"]
+    autres    = [r for r in actifs if r["status"] not in ("ok", "warning", "critical")]
 
     lignes = [
         f"Rapport de monitoring Gandi — {now}",
@@ -173,6 +178,7 @@ def send_test_report(results: list[dict], cfg: dict, now: str):
     _section("🟡 WARNINGS (≤ 30 jours)", warnings)
     _section("🟢 OK", ok_list)
     _section("⚪ STATUT INCONNU / ERREUR", autres)
+    _section("🔇 IGNORES (exclusions.txt)", muted)
 
     body = "\n".join(lignes)
     _send_email(to_addr, subject, body, cfg)
@@ -210,6 +216,12 @@ def run(test_mode: bool = False, list_mode: bool = False):
 
     log.info(f"{len(results)} domaines récupérés depuis Gandi")
 
+    exclusions = load_exclusions()
+    for r in results:
+        r["muted"], r["muted_reason"] = match_exclusion(exclusions, r["fqdn"])
+        if r["muted"]:
+            log.info(f"  {r['fqdn']} ignoré (exclusions.txt) : {r['muted_reason']}")
+
     # Affichage terminal (mode --list)
     if list_mode:
         display_list(results)
@@ -220,8 +232,8 @@ def run(test_mode: bool = False, list_mode: bool = False):
         "domains": results,
         "last_run": now,
         "total": len(results),
-        "critiques": sum(1 for r in results if r["status"] == "critical"),
-        "warnings": sum(1 for r in results if r["status"] == "warning"),
+        "critiques": sum(1 for r in results if r["status"] == "critical" and not r.get("muted")),
+        "warnings": sum(1 for r in results if r["status"] == "warning" and not r.get("muted")),
     }
     RESULTS_GANDI_JSON.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2, default=str),
@@ -239,7 +251,7 @@ def run(test_mode: bool = False, list_mode: bool = False):
     nb_alertes = send_gandi_alerts(results, cfg, now)
 
     # Stats finales
-    nb_warn = sum(1 for r in results if r["status"] in ("warning", "critical"))
+    nb_warn = sum(1 for r in results if r["status"] in ("warning", "critical") and not r.get("muted"))
     if nb_warn == 0:
         log.info(f"=== Terminé — {len(results)} domaines vérifiés — TOUT EST OK ===")
     else:

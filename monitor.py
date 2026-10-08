@@ -29,6 +29,7 @@ from checks import (
     load_backup_status,
 )
 import history
+from exclusions import load_exclusions, match as match_exclusion, host_of
 
 warnings.filterwarnings("ignore")
 
@@ -118,8 +119,9 @@ def send_test_report(results: list, cfg: dict, now: str):
     to_addr = os.environ.get("EMAIL_TEST", cfg.get("Email test", "axel.dos-santos@albys.com"))
     subject = f"[MONITORING] Rapport complet — {now}"
 
-    alertes = [r for r in results if not r["up"] or r["ssl_st"] in ("warning", "critical")]
-    sains = [r for r in results if r not in alertes]
+    actifs = [r for r in results if not r.get("muted")]
+    alertes = [r for r in actifs if not r["up"] or r["ssl_st"] in ("warning", "critical")]
+    sains = [r for r in actifs if r not in alertes]
 
     lignes = [f"Rapport de monitoring — {now}", "=" * 60, ""]
     lignes.append(f"Total sites : {len(results)}   Alertes : {len(alertes)}")
@@ -185,6 +187,14 @@ def run(test_mode: bool = False, run_psi: bool = False):
     results = []
     excel_writes = []
 
+    exclusions = load_exclusions()
+    if exclusions:
+        log.info(f"Exclusions chargees : {', '.join(sorted(exclusions))}")
+    # (hote, categorie) deja alertes pendant ce run : evite les doublons quand
+    # plusieurs lignes de l'Excel pointent vers la meme URL (ex. leadportage.com
+    # et lead-portage.com -> https://lead-portage.com)
+    alerted_this_run: set[tuple[str, str]] = set()
+
     for excel_row_num, row in enumerate(ws.iter_rows(min_row=3, values_only=True), start=3):
         client = row[COL_CLIENT - 1]
         domaine = row[COL_DOMAINE - 1]
@@ -217,6 +227,11 @@ def run(test_mode: bool = False, run_psi: bool = False):
         # Backup : lookup par domaine
         backup = backup_index.get(domaine_str.lower(), {})
 
+        host = host_of(url)
+        muted, muted_reason = match_exclusion(exclusions, domaine_str, url)
+        if muted:
+            log.info(f"  Ignore (exclusions.txt) : {muted_reason} — aucun email")
+
         # Construction des alertes
         # Chaque alerte : (titre, detail, priorite, categorie, expires_iso, days_left)
         issues = []
@@ -243,6 +258,11 @@ def run(test_mode: bool = False, run_psi: bool = False):
 
         ticket_ids = []
         for title_prefix, detail, _, category, expires_iso, days_left in issues:
+            if muted:
+                continue
+            if (host, category) in alerted_this_run:
+                log.info(f"  {title_prefix}: deja alerte pour {host} dans ce run — ignore")
+                continue
             # Verifier si on doit envoyer une alerte (deduplication J-30/J-15/J-7/sticky)
             should_send, alert_type = history.should_send_alert(
                 HISTORY_DB, domaine_str, category,
@@ -265,6 +285,7 @@ def run(test_mode: bool = False, run_psi: bool = False):
                 f"Detecte   : {now}\n"
             )
             ok = send_support_email(cfg, subject, body)
+            alerted_this_run.add((host, category))
             if ok:
                 history.mark_alert_sent(
                     HISTORY_DB, domaine_str, category, alert_type,
@@ -292,9 +313,13 @@ def run(test_mode: bool = False, run_psi: bool = False):
             "ssl_msg": ssl_msg,
             "ssl_days": ssl_days,
             "ssl_issuer": ssl_issuer,
+            "ssl_expires_iso": ssl_expires_iso,
             "ndd_st": ndd_st,
             "ndd_msg": ndd_msg,
             "ndd_days": ndd_days,
+            "ndd_expires_iso": ndd_expires_iso,
+            "muted": muted,
+            "muted_reason": muted_reason,
             "psi": psi,
             "stack": stack_info,
             "backup": backup,
@@ -328,10 +353,11 @@ def run(test_mode: bool = False, run_psi: bool = False):
     alertes_count = sum(
         1
         for r in results
-        if not r["up"]
+        if not r.get("muted")
+        and (not r["up"]
         or r["ssl_st"] in ("warning", "critical")
         or r["ndd_st"] in ("warning", "critical")
-        or (r.get("backup") or {}).get("status") == "critical"
+        or (r.get("backup") or {}).get("status") == "critical")
     )
     if alertes_count == 0:
         log.info(f"=== Termine - {len(results)} sites verifies — TOUT EST OK ===\n")

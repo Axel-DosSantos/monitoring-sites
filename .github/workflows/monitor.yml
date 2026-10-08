@@ -54,6 +54,32 @@ jobs:
             python monitor.py
           fi
 
+      - name: Monitoring des domaines Gandi
+        # Ne tourne que si le secret GANDI_API_KEY (ou GANDI_PAT) est defini.
+        continue-on-error: true
+        env:
+          GANDI_API_KEY:    ${{ secrets.GANDI_API_KEY }}
+          GANDI_PAT:        ${{ secrets.GANDI_PAT }}
+          GANDI_SHARING_ID: ${{ secrets.GANDI_SHARING_ID }}
+          SMTP_HOST:     ${{ secrets.SMTP_HOST }}
+          SMTP_PORT:     ${{ secrets.SMTP_PORT }}
+          SMTP_USER:     ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          EMAIL_FROM:    ${{ secrets.EMAIL_FROM }}
+          EMAIL_SUPPORT: ${{ secrets.EMAIL_SUPPORT }}
+          EMAIL_AXEL:    ${{ secrets.EMAIL_AXEL }}
+        run: |
+          if [ -z "$GANDI_API_KEY" ] && [ -z "$GANDI_PAT" ]; then
+            echo "GANDI_API_KEY non configure : etape ignoree"
+            exit 0
+          fi
+          python gandi_monitor.py
+
+      - name: Verifier les dates des domaines (registre public RDAP)
+        # Met a jour results_gandi.json meme sans cle API Gandi.
+        continue-on-error: true
+        run: python refresh_domains.py
+
       - name: Generer le dashboard statique
         run: python build_static.py
 
@@ -61,7 +87,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add results.json history.db inventaire_monitoring.xlsx monitor.log || true
+          git add results.json results_gandi.json history.db inventaire_monitoring.xlsx monitor.log || true
           git diff --cached --quiet || git commit -m "chore: monitoring $(date +'%d/%m/%Y %H:%M')"
           git push
 

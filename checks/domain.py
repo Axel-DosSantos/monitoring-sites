@@ -4,6 +4,8 @@ from __future__ import annotations
 import re
 from datetime import datetime, timezone
 
+from .rdap import rdap_expiration
+
 try:
     import whois  # type: ignore
     WHOIS_AVAILABLE = True
@@ -23,14 +25,19 @@ def check_domain(url: str, warn_days: int = 30):
                         utilisee pour detecter un renouvellement de domaine
                         et reset l'etat des alertes J-30/J-15.
     """
-    if not WHOIS_AVAILABLE:
-        return "skip", "python-whois non installe", None, None
     try:
-        domain = re.sub(r"https?://", "", url).split("/")[0].split("?")[0]
-        w = whois.whois(domain)
-        exp = w.expiration_date
-        if isinstance(exp, list):
-            exp = exp[0]
+        domain = re.sub(r"https?://", "", url).split("/")[0].split("?")[0].split(":")[0]
+        if domain.lower().startswith("www."):
+            domain = domain[4:]
+        # 1) RDAP (HTTPS, fiable depuis GitHub Actions)  2) WHOIS en secours
+        exp = rdap_expiration(domain)
+        if exp is None:
+            if not WHOIS_AVAILABLE:
+                return "unknown", "RDAP indisponible, python-whois non installe", None, None
+            w = whois.whois(domain)
+            exp = w.expiration_date
+            if isinstance(exp, list):
+                exp = exp[0]
         if not exp:
             return "unknown", "Date inconnue", None, None
         if exp.tzinfo is None:

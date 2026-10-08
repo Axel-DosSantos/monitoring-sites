@@ -1,0 +1,8 @@
+# Domaines ignores par le monitoring : plus aucun email, grises sur le dashboard.
+# Une ligne par domaine, raison optionnelle apres un #.
+# Pour reactiver un domaine : supprimer sa ligne.
+
+lead-portage.com    # projet lance en 2025 puis arrete
+lead-portage.fr     # projet arrete
+leadportage.com     # projet arrete
+leadportage.fr      # projet arrete
