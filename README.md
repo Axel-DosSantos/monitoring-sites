@@ -161,6 +161,13 @@ python build_static.py
 | Backup > 40 jours            | support + axel                       |
 | PHP en fin de vie (<= 8.0)   | support + axel                       |
 
+L'alerte NDD de `mairie-vimpelles.fr` pour l'echeance WHOIS du `2026-11-02`
+est suspendue : le renouvellement OVH a ete paye le 26 octobre 2026.
+Cette exception est definie dans `history.py` (`SUPPRESSED_NDD_EXPIRATIONS`).
+Les controles et les autres alertes restent actifs, y compris SSL, panne et backup
+pour ce site. Les alertes NDD reprennent automatiquement pour toute nouvelle
+date d'expiration. Pour retirer l'exception, supprimer son entree du dictionnaire.
+
 ## Ajouter un nouveau site
 
 Editer `inventaire_monitoring.xlsx`, onglet **Inventaire** :

@@ -36,6 +36,12 @@ STICKY_REMINDER_DAYS = {
 }
 DEFAULT_REMINDER_INTERVAL_DAYS = 7
 
+# Renouvellement OVH paye : suspendre uniquement l'ancienne echeance WHOIS.
+# Une nouvelle date d'expiration reactive automatiquement les alertes NDD.
+SUPPRESSED_NDD_EXPIRATIONS = {
+    "mairie-vimpelles.fr": "2026-11-02",
+}
+
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS checks (
     id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -232,6 +238,11 @@ def should_send_alert(
 
 def _should_send_countdown(db_path, domain, category, expires_iso, days_left, today_iso):
     if expires_iso is None or days_left is None:
+        return False, "none"
+    domain_name = domain.strip().lower().removeprefix("gandi:").removeprefix("www.")
+    if category == "ndd" and SUPPRESSED_NDD_EXPIRATIONS.get(domain_name) == expires_iso:
+        log.info("Alerte NDD suspendue pour %s, echeance %s (renouvellement OVH paye)",
+                 domain_name, expires_iso)
         return False, "none"
     if days_left > 30:
         return False, "none"

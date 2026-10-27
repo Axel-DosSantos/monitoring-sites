@@ -207,6 +207,34 @@ def test_backup_pas_de_rappel_avant_7j():
 
 # --- Test transverse ---------------------------------------------------------
 
+def test_vimpelles_suspend_uniquement_ancienne_echeance_ndd():
+    """L'ancienne echeance NDD est muette, toutes les autres alertes restent actives."""
+    with tempfile.TemporaryDirectory() as tmp:
+        db = Path(tmp) / "t.db"
+        for domain in ("mairie-vimpelles.fr", "www.MAIRIE-VIMPELLES.FR",
+                       "gandi:mairie-vimpelles.fr"):
+            assert history.should_send_alert(
+                db, domain, "ndd", expires_iso="2026-11-02", days_left=6,
+                today_iso="2026-10-27",
+            ) == (False, "none")
+
+        for category in ("ssl", "down", "backup"):
+            should, _ = history.should_send_alert(
+                db, "mairie-vimpelles.fr", category,
+                expires_iso="2026-11-02", days_left=6, today_iso="2026-10-27",
+            )
+            assert should, f"L'alerte {category} doit rester active"
+
+        assert history.should_send_alert(
+            db, "autre-domaine.fr", "ndd", expires_iso="2026-11-02", days_left=6,
+            today_iso="2026-10-27",
+        ) == (True, "daily")
+        assert history.should_send_alert(
+            db, "mairie-vimpelles.fr", "ndd", expires_iso="2027-11-02", days_left=30,
+            today_iso="2027-10-03",
+        ) == (True, "j30")
+
+
 def test_categories_independantes():
     """SSL et NDD pour le meme domaine sont gerees independamment."""
     with tempfile.TemporaryDirectory() as tmp:
@@ -234,5 +262,6 @@ if __name__ == "__main__":
     test_backup_first_puis_resolu()
     test_backup_pas_de_rappel_avant_7j()
     print("\n--- Transverse ---")
+    test_vimpelles_suspend_uniquement_ancienne_echeance_ndd()
     test_categories_independantes()
     print("\n[OK] Tous les tests passent.")
