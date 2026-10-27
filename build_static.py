@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
@@ -248,6 +249,9 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>Monitoring Albys</title>
+<link rel="icon" href="./static/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" href="./static/favicon.svg" type="image/svg+xml" sizes="any">
+<link rel="apple-touch-icon" href="./static/apple-touch-icon.png" sizes="180x180">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{
@@ -688,6 +692,7 @@ def main():
 
     trends = load_trends_for_all(sites, days=30)
     PUBLIC_DIR.mkdir(exist_ok=True)
+    shutil.copytree(BASE_DIR / "static", PUBLIC_DIR / "static", dirs_exist_ok=True)
 
     html = HTML_TEMPLATE
     html = html.replace("__LAST_RUN__",      data.get("last_run") or "jamais")
